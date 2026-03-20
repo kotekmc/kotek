@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-20T15:13:29.671521",
+  "updated_at": "2026-03-20T16:25:09.312530",
   "server": {
     "online": false,
     "tps": null,
@@ -10,8 +10,8 @@
   "players": [
     {
       "uuid": "1815891eec6345d19c633841160e3ca6",
-      "playtime_ticks": 3298981,
-      "mobs_killed": 2712,
+      "playtime_ticks": 3310981,
+      "mobs_killed": 2713,
       "deaths": 10,
       "bosses": [
         {
@@ -34,9 +34,9 @@
       "advancements_total": 440,
       "ores_mined": 5686,
       "crafts_done": 9271,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 8693,
+      "ftb_quests_done": 115,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:mined": {
           "minecraft:dragon_wall_head": 9,
@@ -562,9 +562,9 @@
         },
         "minecraft:custom": {
           "minecraft:interact_with_crafting_table": 307,
-          "minecraft:play_time": 3298981,
+          "minecraft:play_time": 3310981,
           "minecraft:deaths": 10,
-          "minecraft:jump": 69067,
+          "minecraft:jump": 69068,
           "minecraft:raider_killed": 827,
           "minecraft:interact_with_cartography_table": 1,
           "minecraft:interact_with_smoker": 5,
@@ -572,8 +572,8 @@
           "minecraft:interact_with_anvil": 91,
           "minecraft:inspect_hopper": 2,
           "minecraft:elyra_diary": 4,
-          "minecraft:time_since_rest": 653058,
-          "minecraft:undead_killed": 820,
+          "minecraft:time_since_rest": 665058,
+          "minecraft:undead_killed": 821,
           "minecraft:swim_one_cm": 177734,
           "minecraft:open_chest": 3337,
           "minecraft:villager_killed": 2,
@@ -588,36 +588,36 @@
           "minecraft:bell_ring": 4,
           "minecraft:eat_cake_slice": 2,
           "minecraft:leave_game": 44,
-          "minecraft:time_since_death": 652483,
+          "minecraft:time_since_death": 664483,
           "minecraft:interact_with_furnace": 62,
           "minecraft:traded_with_villager": 1,
           "minecraft:sleep_in_bed": 27,
-          "minecraft:damage_dealt": 321030,
+          "minecraft:damage_dealt": 321200,
           "waystones:waystone_activated": 50,
           "minecraft:interact_with_smithing_table": 26,
           "minecraft:damage_dealt_absorbed": 962,
           "minecraft:sneak_time": 78898,
           "minecraft:interact_with_lectern": 1,
           "minecraft:interact_with_blast_furnace": 4,
-          "minecraft:total_world_time": 3298981,
+          "minecraft:total_world_time": 3310981,
           "apotheosis:world_tiers_activated": 2,
           "minecraft:interact_with_stonecutter": 1,
-          "minecraft:fly_one_cm": 13717152,
+          "minecraft:fly_one_cm": 13717823,
           "minecraft:fish_caught": 4,
           "minecraft:fall_one_cm": 2527791,
           "lootr:looted_stat": 1126,
           "minecraft:rite_of_silent_bond": 4,
           "constructionstick:use_stick": 976,
-          "minecraft:sprint_one_cm": 6874318,
+          "minecraft:sprint_one_cm": 6874506,
           "minecraft:drop": 1139,
           "minecraft:walk_on_water_one_cm": 47419,
           "minecraft:interact_with_loom": 1,
           "minecraft:open_enderchest": 5,
           "minecraft:player_kills": 12,
           "minecraft:crouch_one_cm": 267988,
-          "minecraft:mob_kills": 3003,
+          "minecraft:mob_kills": 3004,
           "minecraft:climb_one_cm": 120448,
-          "minecraft:walk_one_cm": 6673277,
+          "minecraft:walk_one_cm": 6674817,
           "minecraft:walk_under_water_one_cm": 44400,
           "minecraft:damage_absorbed": 1880,
           "minecraft:trigger_trapped_chest": 5
@@ -1796,7 +1796,7 @@
           "minecolonies:campbarbarian": 29,
           "minecraft:pillager": 93,
           "minecraft:donkey": 1,
-          "minecraft:zombie": 226,
+          "minecraft:zombie": 227,
           "iceandfire:sea_serpent": 1,
           "livingthings:snail": 1,
           "minecraft:evoker": 58,
@@ -1924,7 +1924,7 @@
           "minecraft:wind_charge": 72,
           "ars_nouveau:arcane_pedestal": 2,
           "tombstone:magic_scroll": 6,
-          "allthemodium:unobtainium_sword": 115,
+          "allthemodium:unobtainium_sword": 116,
           "irons_spellbooks:archevoker_helmet": 1,
           "minecraft:potion": 12,
           "minecraft:porkchop": 5,
@@ -2305,7 +2305,7 @@
       "name": "0YAC",
       "online": false,
       "playtime_human": "1j 21h",
-      "kd": 271.2
+      "kd": 271.3
     },
     {
       "uuid": "1a4113a64b304bb1b6b198344c1e7597",
@@ -2323,9 +2323,9 @@
       "advancements_total": 262,
       "ores_mined": 352,
       "crafts_done": 639,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 690,
+      "ftb_quests_done": 289,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:custom": {
           "minecraft:villager_killed": 12,
@@ -2926,9 +2926,9 @@
       "advancements_total": 219,
       "ores_mined": 39,
       "crafts_done": 438,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 351,
+      "ftb_quests_done": 157,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:crafted": {
           "minecraft:stone_pickaxe": 1,
@@ -3250,9 +3250,9 @@
       "advancements_total": 36,
       "ores_mined": 0,
       "crafts_done": 0,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 3,
+      "ftb_quests_done": 8,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:custom": {
           "minecraft:jump": 4,
@@ -3285,9 +3285,9 @@
       "advancements_total": 244,
       "ores_mined": 38,
       "crafts_done": 113,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 378,
+      "ftb_quests_done": 57,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:used": {
           "minecraft:shield": 47,
@@ -3741,9 +3741,9 @@
       "advancements_total": 469,
       "ores_mined": 15004,
       "crafts_done": 64243,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 20424,
+      "ftb_quests_done": 93,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:mined": {
           "chipped:cut_stone_column": 248,
@@ -7164,9 +7164,9 @@
       "advancements_total": 379,
       "ores_mined": 6455,
       "crafts_done": 14081,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 4253,
+      "ftb_quests_done": 72,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:crafted": {
           "minecraft:blaze_powder": 2,
@@ -8836,9 +8836,9 @@
       "advancements_total": 388,
       "ores_mined": 379,
       "crafts_done": 4600,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 9390,
+      "ftb_quests_done": 52,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:custom": {
           "minecraft:interact_with_crafting_table": 269,
@@ -10536,7 +10536,7 @@
     },
     {
       "uuid": "948424e8fcf04152a964ec9a1fa8be96",
-      "playtime_ticks": 6062970,
+      "playtime_ticks": 6074970,
       "mobs_killed": 4522,
       "deaths": 4,
       "bosses": [
@@ -10590,9 +10590,9 @@
       "advancements_total": 539,
       "ores_mined": 13614,
       "crafts_done": 19123,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 15431,
+      "ftb_quests_done": 340,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:mined": {
           "minecraft:dragon_wall_head": 1,
@@ -11344,13 +11344,13 @@
           "minecraft:damage_absorbed": 7887,
           "minecraft:trigger_trapped_chest": 18,
           "minecraft:interact_with_crafting_table": 608,
-          "minecraft:play_time": 6062970,
+          "minecraft:play_time": 6074970,
           "minecraft:deaths": 4,
           "minecraft:jump": 48913,
           "minecraft:interact_with_smoker": 4,
           "minecraft:horse_one_cm": 3069,
           "minecraft:interact_with_anvil": 162,
-          "minecraft:time_since_rest": 182596,
+          "minecraft:time_since_rest": 194596,
           "minecraft:undead_killed": 1447,
           "minecraft:swim_one_cm": 513266,
           "minecraft:open_chest": 7742,
@@ -11364,11 +11364,11 @@
           "minecraft:open_barrel": 317,
           "minecraft:bell_ring": 1,
           "minecraft:leave_game": 47,
-          "minecraft:time_since_death": 182531,
+          "minecraft:time_since_death": 194531,
           "minecraft:steal_effect": 32,
           "minecraft:damage_dealt": 625000,
           "waystones:waystone_activated": 45,
-          "minecraft:total_world_time": 6062970,
+          "minecraft:total_world_time": 6074970,
           "minecraft:items_extracted": 4560,
           "apotheosis:world_tiers_activated": 1,
           "minecraft:interact_with_stonecutter": 10,
@@ -14118,9 +14118,9 @@
       "advancements_total": 132,
       "ores_mined": 92,
       "crafts_done": 209,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 176,
+      "ftb_quests_done": 89,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:crafted": {
           "minecraft:crafting_table": 3,
@@ -14302,9 +14302,9 @@
       "advancements_total": 189,
       "ores_mined": 45,
       "crafts_done": 201,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 344,
+      "ftb_quests_done": 110,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:killed": {
           "livingthings:crab": 1,
@@ -14559,9 +14559,9 @@
       "advancements_total": 149,
       "ores_mined": 33,
       "crafts_done": 111,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 92,
+      "ftb_quests_done": 73,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:custom": {
           "minecraft:time_since_rest": 19329,
@@ -14690,9 +14690,9 @@
       "advancements_total": 397,
       "ores_mined": 865,
       "crafts_done": 31296,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 1661,
+      "ftb_quests_done": 67,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:custom": {
           "minecraft:interact_with_crafting_table": 21,
@@ -16621,9 +16621,9 @@
       "advancements_total": 454,
       "ores_mined": 4519,
       "crafts_done": 5182,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 10804,
+      "ftb_quests_done": 128,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:crafted": {
           "minecraft:blaze_powder": 2,
@@ -19206,9 +19206,9 @@
       "advancements_total": 418,
       "ores_mined": 1750,
       "crafts_done": 11467,
-      "chunks_explored": 0,
-      "ftb_quests_done": 0,
-      "ftb_quests_total": 10,
+      "chunks_explored": 6075,
+      "ftb_quests_done": 425,
+      "ftb_quests_total": 5626,
       "stats": {
         "minecraft:custom": {
           "minecraft:interact_with_crafting_table": 253,
