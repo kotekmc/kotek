@@ -11,311 +11,66 @@
   --bg:#0f1923;--bg2:#162233;--card:rgba(22,34,51,0.9);--card2:rgba(15,25,35,0.94);
   --border:rgba(249,115,22,0.2);--border2:rgba(249,115,22,0.08);
   --text:#f1f5f9;--text-d:#94a3b8;--text-dd:#475569;
-  --gold:#fbbf24;--silver:#cbd5e1;--bronze:#cd7f32;--red:#ef4444;
+  --gold:#fbbf24;--silver:#cbd5e1;--bronze:#cd7f32;--red:#ef4444;--explore:#10b981;
   --nav-h:68px;--r:14px;--r-sm:8px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(15,25,35,0.75);backdrop-filter:blur(20px);border-bottom:1px solid rgba(249,115,22,0.15);}
 .nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;}
-.nav-logo-img{height:38px;width:auto;object-fit:contain;}
-.nav-logo-txt{font-family:'Fredoka One',sans-serif;font-size:1.5rem;color:var(--sun-l);text-shadow:0 0 20px rgba(251,191,36,.4);}
+.nav-logo-txt{font-family:'Fredoka One',sans-serif;font-size:1.5rem;color:var(--sun-l);}
 .nav-tabs{display:flex;gap:6px;}
-.nav-tab{font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;padding:8px 22px;cursor:pointer;background:transparent;border:1.5px solid transparent;border-radius:50px;color:var(--text-d);transition:all .2s;}
-.nav-tab:hover{color:var(--text);border-color:rgba(249,115,22,.3);}
-.nav-tab.active{background:linear-gradient(135deg,var(--sun),var(--sun-d));border-color:transparent;color:#fff;box-shadow:0 4px 15px rgba(249,115,22,.4);}
+.nav-tab{font-weight:700;padding:8px 22px;cursor:pointer;background:transparent;border:1.5px solid transparent;border-radius:50px;color:var(--text-d);transition:all .2s;}
+.nav-tab.active{background:linear-gradient(135deg,var(--sun),var(--sun-d));color:#fff;}
 
 .page{display:none;min-height:100vh;}
-.page.active{display:block;animation:fadeIn .3s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page.active{display:block;}
 
-/* HERO */
-.hero-section{position:relative;height:100vh;min-height:700px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:url('background.png') center center/cover no-repeat;transform:scale(1.05);transition:transform .1s linear;}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,25,35,.3) 0%,rgba(15,25,35,.05) 35%,rgba(15,25,35,.55) 70%,rgba(15,25,35,1) 100%);}
-.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;padding:0 20px;}
-.hero-logo{width:160px;height:160px;object-fit:contain;filter:drop-shadow(0 8px 32px rgba(0,0,0,.7));animation:float 4s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.hero-title{font-family:'Fredoka One',sans-serif;font-size:clamp(3rem,8vw,6rem);color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.8),0 0 60px rgba(249,115,22,.3);letter-spacing:.04em;line-height:1;}
-.hero-sub{font-size:1rem;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.14em;text-transform:uppercase;}
-.hero-ip{display:inline-flex;align-items:center;gap:12px;background:rgba(0,0,0,.45);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:10px 24px;font-family:'Fredoka One',sans-serif;font-size:1.1rem;color:var(--sun-l);cursor:pointer;transition:all .2s;}
-.hero-ip:hover{background:rgba(249,115,22,.2);border-color:var(--sun);}
-.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(255,255,255,.5);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;animation:bounce 2s ease-in-out infinite;}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.hero-section{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:url('background.png') center center/cover no-repeat;}
+.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;}
+.hero-title{font-family:'Fredoka One',sans-serif;font-size:clamp(3rem,8vw,6rem);color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.8);}
 
-.section-a{padding:56px 0 72px;background:var(--bg);}
-.section-b{padding:56px 0 72px;background:var(--bg2);}
 .wrap{max-width:1200px;margin:0 auto;padding:0 28px;}
-
 .sec-header{display:flex;align-items:center;gap:14px;margin:48px 0 22px;}
-.sec-header:first-child{margin-top:0;}
-.sec-header h2{font-family:'Fredoka One',sans-serif;font-size:1.4rem;color:var(--text);white-space:nowrap;}
-.sec-line{flex:1;height:2px;background:linear-gradient(90deg,rgba(249,115,22,.4),transparent);border-radius:2px;}
-.sec-icon{font-size:1.3rem;}
+.sec-header h2{font-family:'Fredoka One',sans-serif;font-size:1.4rem;color:var(--text);}
+.sec-line{flex:1;height:2px;background:linear-gradient(90deg,rgba(249,115,22,.4),transparent);}
 
-/* STATS */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-@media(max-width:640px){.grid2{grid-template-columns:1fr;}}
-.gstat{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;display:flex;align-items:center;gap:18px;transition:transform .2s,border-color .2s;}
-.gstat:hover{transform:translateY(-2px);border-color:rgba(249,115,22,.4);}
-.gsi{font-size:2.2rem;flex-shrink:0;}
-.gs-val{font-family:'Fredoka One',sans-serif;font-size:1.8rem;color:var(--sun-l);}
-.gs-lbl{font-size:.8rem;color:var(--text-d);font-weight:600;margin-top:2px;}
-
-/* SCROLL */
-.scroll-wrap{overflow:hidden;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:20px 0;position:relative;}
-.scroll-wrap::before,.scroll-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none;}
-.scroll-wrap::before{left:0;background:linear-gradient(90deg,var(--bg),transparent);}
-.scroll-wrap::after{right:0;background:linear-gradient(270deg,var(--bg),transparent);}
-.scroll-track{display:flex;gap:28px;animation:sl 32s linear infinite;width:max-content;padding:0 40px;}
-.scroll-track:hover{animation-play-state:paused;}
-@keyframes sl{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.sp{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .2s;}
-.sp:hover{transform:translateY(-6px);}
-.sp:hover .sp-n{color:var(--sun-l);}
-.sp-h{width:56px;height:56px;border-radius:8px;border:2px solid rgba(249,115,22,.3);image-rendering:pixelated;background:var(--bg2);box-shadow:0 4px 12px rgba(0,0,0,.4);transition:border-color .2s,box-shadow .2s;display:block;}
-.sp:hover .sp-h{border-color:var(--sun);box-shadow:0 0 16px rgba(249,115,22,.3);}
-.sp-n{font-size:.75rem;font-weight:700;color:var(--text-d);transition:color .2s;text-align:center;}
-
-/* LEADERBOARD */
-.lb-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-@media(max-width:860px){.lb-grid{grid-template-columns:1fr;}}
+/* Hall of Fame - Grille 3 colonnes */
+.lb-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:20px;}
 .lb-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
-.lb-hd{display:flex;align-items:center;gap:10px;padding:14px 20px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border2);}
-.lb-hd-ico{font-size:1.2rem;}
-.lb-hd-t{font-family:'Fredoka One',sans-serif;font-size:.95rem;color:var(--text);}
-.lb-hd-t.orange{color:var(--sun);}
+.lb-hd{display:flex;align-items:center;gap:10px;padding:14px 20px;background:rgba(0,0,0,.2);}
+.lb-hd-t{font-family:'Fredoka One',sans-serif;font-size:.95rem;}
+
 .podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:28px 20px 0;min-height:220px;}
-.podium-col{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;max-width:130px;cursor:pointer;}
-.podium-col:hover .podium-av{transform:scale(1.05);}
-.podium-player{display:flex;flex-direction:column;align-items:center;gap:6px;}
-.podium-av{image-rendering:pixelated;background:var(--bg2);border-radius:8px;display:block;transition:transform .2s,box-shadow .2s;}
-.podium-col.rank-1 .podium-av{width:64px;height:64px;border:2px solid var(--gold);box-shadow:0 0 20px rgba(251,191,36,.35);}
-.podium-col.rank-2 .podium-av{width:52px;height:52px;border:2px solid var(--silver);}
-.podium-col.rank-3 .podium-av{width:46px;height:46px;border:2px solid var(--bronze);}
-.podium-medal{font-size:1.4rem;line-height:1;}
-.podium-col.rank-1 .podium-medal{font-size:1.7rem;}
-.podium-name{font-size:.75rem;font-weight:800;color:var(--text);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-.podium-col.rank-1 .podium-name{color:var(--gold);}
-.podium-val{font-family:'Fredoka One',sans-serif;font-size:.85rem;text-align:center;}
-.podium-col.rank-1 .podium-val{color:var(--gold);font-size:.95rem;}
-.podium-col.rank-2 .podium-val{color:var(--silver);}
-.podium-col.rank-3 .podium-val{color:var(--bronze);}
-.podium-stage{width:100%;border-radius:8px 8px 0 0;display:flex;align-items:flex-end;justify-content:center;padding:8px 0 12px;}
-.podium-col.rank-1 .podium-stage{height:80px;background:linear-gradient(180deg,rgba(251,191,36,.12),rgba(251,191,36,.03));}
-.podium-col.rank-2 .podium-stage{height:58px;background:linear-gradient(180deg,rgba(203,213,225,.07),rgba(203,213,225,.01));}
-.podium-col.rank-3 .podium-stage{height:42px;background:linear-gradient(180deg,rgba(205,127,50,.07),rgba(205,127,50,.01));}
-
-/* COUNTDOWN 3D — dans le hero */
-.hero-countdown{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:18px;
-  margin-top:8px;
-}
-.hero-cd-label{
-  font-size:.85rem;font-weight:700;
-  color:rgba(255,255,255,.8);letter-spacing:.18em;text-transform:uppercase;
-  text-shadow:0 2px 8px rgba(0,0,0,.6);
-}
-.hero-cd-timer{
-  display:flex;align-items:flex-end;gap:8px;
-  perspective:600px;
-}
-.cd3-block{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-}
-.cd3-face{
-  position:relative;
-  width:90px;height:90px;
-  transform-style:preserve-3d;
-  transform:rotateX(-22deg) rotateY(4deg);
-  filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));
-}
-/* Face frontale */
-.cd3-front{
-  position:absolute;inset:0;
-  background:linear-gradient(160deg,rgba(249,115,22,.95),rgba(194,65,12,.98));
-  border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  border:1px solid rgba(255,200,100,.25);
-  box-shadow:
-    inset 0 1px 0 rgba(255,200,100,.3),
-    inset 0 -2px 0 rgba(0,0,0,.3);
-}
-.cd3-num{
-  font-family:'Fredoka One',sans-serif;
-  font-size:3rem;color:#fff;
-  text-shadow:0 2px 0 rgba(0,0,0,.4),0 0 20px rgba(255,180,50,.3);
-  line-height:1;
-}
-/* Côté gauche (3D) */
-.cd3-face::before{
-  content:'';position:absolute;
-  top:6px;left:-10px;
-  width:10px;height:calc(100% - 8px);
-  background:linear-gradient(180deg,rgba(120,40,0,.9),rgba(80,20,0,.95));
-  border-radius:4px 0 0 4px;
-  transform:skewY(-1deg);
-  border-left:1px solid rgba(0,0,0,.4);
-}
-/* Face inférieure (3D) */
-.cd3-face::after{
-  content:'';position:absolute;
-  bottom:-10px;left:6px;
-  width:calc(100% - 8px);height:10px;
-  background:linear-gradient(90deg,rgba(120,40,0,.9),rgba(80,20,0,.95));
-  border-radius:0 0 4px 4px;
-  transform:skewX(-1deg);
-  border-bottom:1px solid rgba(0,0,0,.4);
-}
-.cd3-unit{
-  font-size:.65rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:.2em;
-  color:rgba(255,255,255,.65);
-  text-shadow:0 1px 4px rgba(0,0,0,.8);
-}
-.cd3-sep{
-  font-family:'Fredoka One',sans-serif;
-  font-size:2.2rem;color:rgba(255,200,80,.8);
-  margin-bottom:22px;
-  text-shadow:0 2px 8px rgba(0,0,0,.5);
-  transform:rotateX(-15deg);
-  display:inline-block;
-}
-.cd3-expired{
-  font-weight:700;color:#fca5a5;font-size:.95rem;
-  text-shadow:0 2px 6px rgba(0,0,0,.6);
-}
-
-/* STREAM */
-.stream-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
-.stream-offline{padding:56px 32px;text-align:center;}
-.stream-offline-icon{font-size:3.5rem;margin-bottom:16px;}
-.stream-offline-msg{font-size:.95rem;font-weight:600;color:var(--text-d);line-height:1.8;}
-.stream-offline-msg strong{color:var(--sun-l);font-size:1.1rem;}
-.stream-live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);border-radius:50px;padding:5px 14px;font-size:.75rem;font-weight:800;color:#fca5a5;letter-spacing:.1em;}
-.stream-live-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;animation:blink 1s steps(1) infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.stream-embed{width:100%;aspect-ratio:16/9;border:none;display:block;}
-.stream-title-bar{padding:14px 20px;background:rgba(0,0,0,.3);border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;}
-
-/* JOUEURS */
-.players-page{padding-top:calc(var(--nav-h) + 48px);padding-bottom:80px;}
-.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;}
-.pt{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:28px 14px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s,border-color .22s;}
-.pt:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 20px rgba(249,115,22,.08);border-color:rgba(249,115,22,.4);}
-.pt-h{width:70px;height:70px;border-radius:10px;border:2px solid rgba(249,115,22,.25);image-rendering:pixelated;background:var(--bg2);transition:border-color .2s,box-shadow .2s;display:block;}
-.pt:hover .pt-h{border-color:var(--sun);box-shadow:0 0 16px rgba(249,115,22,.25);}
-.pt-nm{font-size:.85rem;font-weight:800;color:var(--text);text-align:center;}
-.pt-pt{font-size:.75rem;color:var(--text-d);font-weight:600;}
-.pt-hint{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(249,115,22,.1));height:36px;opacity:0;transition:opacity .2s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;}
-.pt:hover .pt-hint{opacity:1;}
-.pt-hint span{font-size:.65rem;font-weight:800;color:var(--sun);text-transform:uppercase;letter-spacing:.1em;}
-
-/* PROFIL */
-.profile-page{padding-top:calc(var(--nav-h) + 40px);padding-bottom:80px;}
-.back{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;color:var(--text-d);cursor:pointer;padding:8px 0;transition:color .2s;}
-.back:hover{color:var(--sun);}
-.prof-hdr{display:flex;align-items:flex-start;gap:28px;padding:36px 0 28px;border-bottom:1px solid var(--border2);flex-wrap:wrap;}
-.prof-av{width:120px;height:120px;border-radius:16px;border:3px solid var(--sun);image-rendering:pixelated;background:var(--bg2);box-shadow:0 0 40px rgba(249,115,22,.25),0 8px 30px rgba(0,0,0,.6);display:block;flex-shrink:0;}
-.prof-name{font-family:'Fredoka One',sans-serif;font-size:2.4rem;color:var(--sun-l);text-shadow:0 0 30px rgba(249,115,22,.3);line-height:1.1;}
-.prof-rank{font-size:.85rem;font-weight:700;color:var(--text-d);margin-top:8px;}
-.prof-uuid{font-size:.72rem;color:var(--text-dd);margin-top:4px;font-family:monospace;}
-.team-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;font-size:.78rem;font-weight:800;border-radius:50px;border:1.5px solid var(--sun);background:rgba(249,115,22,.1);color:var(--sun-l);margin-top:10px;}
-.team-tag.solo{border-color:var(--border);background:rgba(255,255,255,.04);color:var(--text-dd);}
+.podium-col{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;cursor:pointer;}
+.podium-av{image-rendering:pixelated;background:var(--bg2);border-radius:8px;width:52px;height:52px;border:2px solid transparent;}
+.rank-1 .podium-av{width:64px;height:64px;border-color:var(--gold);}
+.podium-name{font-size:.75rem;font-weight:800;text-align:center;}
+.podium-val{font-family:'Fredoka One',sans-serif;font-size:.85rem;}
 
 .psg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-top:28px;}
-.psc{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:20px 20px 18px;border-left:4px solid var(--sun);transition:transform .2s;}
-.psc:hover{transform:translateY(-2px);}
-.psc.bl{border-left-color:var(--red);}
-.psc.cl{border-left-color:#a855f7;}
-.psc-ico{font-size:1.6rem;margin-bottom:8px;}
-.psc-lbl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-d);margin-bottom:5px;}
-.psc-val{font-family:'Fredoka One',sans-serif;font-size:1.4rem;color:var(--text);}
-.psc-sub{font-size:.78rem;color:var(--text-d);margin-top:3px;}
+.psc{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:20px;border-left:4px solid var(--sun);}
+.psc.ex{border-left-color:var(--explore);} /* Couleur Exploration */
+
+/* Accordions Boss & Sorts */
+.acc-group{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);margin-bottom:10px;}
+.acc-trigger{width:100%;padding:14px 18px;background:rgba(0,0,0,.18);border:none;cursor:pointer;display:flex;align-items:center;gap:12px;color:white;}
+.acc-body{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;background:var(--border2);max-height:0;overflow:hidden;transition:max-height .3s;}
+.acc-body.open{max-height:1000px;}
+.acc-entry{display:flex;align-items:center;gap:11px;padding:11px 15px;background:var(--card);}
 
 .quest-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:24px 26px;}
-.quest-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
-.qt-t{font-weight:800;font-size:.9rem;color:var(--text);}
-.qt-f{font-family:'Fredoka One',sans-serif;font-size:1.05rem;color:var(--sun-l);}
-.qt-track{height:14px;background:rgba(0,0,0,.5);border-radius:50px;overflow:hidden;}
-.qt-fill{height:100%;background:linear-gradient(90deg,var(--sun-d),var(--sun-l));border-radius:50px;transition:width 1.5s cubic-bezier(.4,0,.2,1);position:relative;}
-.qt-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:sh 2s linear infinite;}
-@keyframes sh{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
-.qt-pct{margin-top:8px;text-align:right;font-size:.8rem;font-weight:700;color:var(--sun-l);}
+.qt-track{height:14px;background:rgba(0,0,0,.5);border-radius:50px;overflow:hidden;margin-top:10px;}
+.qt-fill{height:100%;background:linear-gradient(90deg,var(--sun-d),var(--sun-l));transition:width 1s;}
 
-/* ── ACCORDION BOSS & SORTS ── */
-.accordion{display:flex;flex-direction:column;gap:10px;}
-.acc-group{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;}
-.acc-trigger{
-  display:flex;align-items:center;gap:12px;
-  width:100%;padding:14px 18px;
-  background:rgba(0,0,0,.18);border:none;cursor:pointer;
-  text-align:left;transition:background .15s;
-}
-.acc-trigger:hover{background:rgba(0,0,0,.3);}
-.acc-trigger[aria-expanded="true"]{background:rgba(249,115,22,.06);}
-.acc-mod-icon{font-size:1.15rem;}
-.acc-mod-name{font-family:'Fredoka One',sans-serif;font-size:.95rem;color:var(--text);flex:1;}
-.acc-prog{font-size:.75rem;font-weight:700;color:var(--text-d);margin-right:6px;}
-.acc-arrow{font-size:.7rem;color:var(--text-d);transition:transform .25s;display:inline-block;}
-.acc-trigger[aria-expanded="true"] .acc-arrow{transform:rotate(90deg);}
-.acc-body{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
-  gap:1px;background:var(--border2);
-  max-height:0;overflow:hidden;transition:max-height .3s ease;
-}
-.acc-body.open{max-height:600px;}
-
-/* Entrée dans l'accordion (boss ou sort) */
-.acc-entry{
-  display:flex;align-items:center;gap:11px;
-  padding:11px 15px;background:var(--card);transition:background .15s;
-}
-.acc-entry.done{background:rgba(249,115,22,.04);}
-.acc-entry.done:hover{background:rgba(249,115,22,.09);}
-.acc-entry.todo{opacity:.48;}
-.acc-entry.todo:hover{opacity:.72;}
-.ae-icon{font-size:1.3rem;flex-shrink:0;}
-.ae-info{flex:1;min-width:0;}
-.ae-name{font-size:.8rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.acc-entry.todo .ae-name{color:var(--text-d);}
-.ae-sub{font-size:.7rem;margin-top:1px;}
-.acc-entry.done .ae-sub{color:var(--sun-l);}
-.acc-entry.todo .ae-sub{color:var(--text-dd);font-style:italic;}
-.ae-check{font-size:.9rem;flex-shrink:0;}
-
-/* Badge école (sorts) */
-.ae-school-badge{
-  font-size:.52rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
-  padding:1px 6px;border-radius:50px;margin-bottom:2px;display:inline-block;
-}
-.school-blood    {background:rgba(220,38,38,.2);color:#fca5a5;border:1px solid rgba(220,38,38,.35);}
-.school-fire     {background:rgba(249,115,22,.2);color:#fdba74;border:1px solid rgba(249,115,22,.35);}
-.school-ice      {background:rgba(56,189,248,.15);color:#7dd3fc;border:1px solid rgba(56,189,248,.3);}
-.school-lightning{background:rgba(250,204,21,.15);color:#fde68a;border:1px solid rgba(250,204,21,.3);}
-.school-holy     {background:rgba(251,191,36,.15);color:#fef08a;border:1px solid rgba(251,191,36,.3);}
-.school-evocation{background:rgba(167,139,250,.15);color:#c4b5fd;border:1px solid rgba(167,139,250,.3);}
-.school-void     {background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3);}
-.school-eldritch {background:rgba(168,85,247,.15);color:#d8b4fe;border:1px solid rgba(168,85,247,.3);}
-.school-poison   {background:rgba(74,222,128,.12);color:#86efac;border:1px solid rgba(74,222,128,.25);}
-
-.acc-empty{padding:28px;text-align:center;font-size:.88rem;font-weight:600;color:var(--text-d);font-style:italic;}
-
-footer{text-align:center;padding:24px;border-top:1px solid var(--border2);font-size:.82rem;color:var(--text-dd);font-weight:600;}
-footer span{color:var(--sun-d);margin:0 6px;}
-.fade-up{animation:fu .5s ease both;}
-@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}
-@media(max-width:600px){nav{padding:0 16px;}.nav-logo-txt{font-size:1.2rem;}.nav-tab{padding:6px 14px;font-size:.78rem;}}
+footer{text-align:center;padding:24px;border-top:1px solid var(--border2);font-size:.82rem;}
 </style>
 </head>
 <body>
 <nav>
   <div class="nav-logo" onclick="goTo('serveur')">
-    <img class="nav-logo-img" src="unnamed_1.png" alt="Kotek" onerror="this.style.display='none'">
     <span class="nav-logo-txt">Kotek</span>
   </div>
   <div class="nav-tabs">
@@ -325,512 +80,193 @@ footer span{color:var(--sun-d);margin:0 6px;}
   <div style="width:80px;"></div>
 </nav>
 
-<!-- PAGE SERVEUR -->
 <div class="page active" id="page-serveur">
-
-  <!-- BLOC 1 : HERO + TIMER 3D -->
   <div class="hero-section">
-    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-bg"></div>
     <div class="hero-content">
-      <img class="hero-logo" src="unnamed_1.png" alt="Kotek" onerror="this.style.display='none'">
       <h1 class="hero-title">Kotek</h1>
-      <div class="hero-sub">All The Mods 10 · Serveur Privé</div>
-      <div class="hero-ip" onclick="navigator.clipboard?.writeText('srv01.uniheberg.fr');this.textContent='✅ Copié !'">
-        📋 srv01.uniheberg.fr<span style="opacity:.6;">:25505</span>
-      </div>
-
-      <!-- TIMER 3D -->
-      <div class="hero-countdown">
-        <div class="hero-cd-label">Profitez de jouer à Kotek encore</div>
-        <div id="cdTimer">
-          <div class="hero-cd-timer">
-            <div class="cd3-block">
-              <div class="cd3-face"><div class="cd3-front"><span class="cd3-num" id="cd-d">—</span></div></div>
-              <div class="cd3-unit">Jours</div>
-            </div>
-            <span class="cd3-sep">:</span>
-            <div class="cd3-block">
-              <div class="cd3-face"><div class="cd3-front"><span class="cd3-num" id="cd-h">—</span></div></div>
-              <div class="cd3-unit">Heures</div>
-            </div>
-            <span class="cd3-sep">:</span>
-            <div class="cd3-block">
-              <div class="cd3-face"><div class="cd3-front"><span class="cd3-num" id="cd-m">—</span></div></div>
-              <div class="cd3-unit">Minutes</div>
-            </div>
-            <span class="cd3-sep">:</span>
-            <div class="cd3-block">
-              <div class="cd3-face"><div class="cd3-front"><span class="cd3-num" id="cd-s">—</span></div></div>
-              <div class="cd3-unit">Secondes</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div style="color:white; font-weight:700;">All The Mods 10 · Serveur Privé</div>
     </div>
-    <div class="hero-scroll"><span>↓</span><span>Défiler</span></div>
   </div>
 
-  <!-- BLOC 2 : STATS + SCROLL + LEADERBOARDS -->
   <div class="section-a">
-  <div class="wrap">
-    <div class="sec-header"><span class="sec-icon">📜</span><h2>Chroniques du Royaume</h2><div class="sec-line"></div></div>
-    <div class="grid2 fade-up">
-      <div class="gstat"><div class="gsi">⏳</div><div><div class="gs-val" id="g-time">—</div><div class="gs-lbl">Heures cumulées sur le serveur</div></div></div>
-      <div class="gstat"><div class="gsi">💀</div><div><div class="gs-val" id="g-deaths">—</div><div class="gs-lbl">Morts totales des aventuriers</div></div></div>
-    </div>
-
-    <div class="sec-header"><span class="sec-icon">🧙</span><h2>Aventuriers du Royaume</h2><div class="sec-line"></div></div>
-    <div class="scroll-wrap fade-up"><div class="scroll-track" id="scrollTrack"></div></div>
-
-    <div class="sec-header"><span class="sec-icon">🏆</span><h2>Hall of Fame</h2><div class="sec-line"></div></div>
-    <div class="lb-grid">
-      <div class="lb-box fade-up s1">
-        <div class="lb-hd"><span class="lb-hd-ico">⏱️</span><span class="lb-hd-t">Temps de Jeu</span></div>
-        <div class="podium-wrap" id="lb-time"></div>
-      </div>
-      <div class="lb-box fade-up s2">
-        <div class="lb-hd"><span class="lb-hd-ico">☠️</span><span class="lb-hd-t orange">Boss Vaincus</span></div>
-        <div class="podium-wrap" id="lb-boss"></div>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <!-- BLOC 3 : STREAM -->
-  <div class="section-b">
-  <div class="wrap">
-    <div class="sec-header"><span class="sec-icon">📺</span><h2>Stream ZeeNoow</h2><div class="sec-line"></div></div>
-    <div class="stream-box fade-up">
-      <div class="stream-offline" id="streamOffline">
-        <div class="stream-offline-icon">📡</div>
-        <div class="stream-offline-msg"><strong>ZeeNoow</strong> n'est pas en live actuellement.<br>Pinguez-le sur Discord pour qu'il en lance un !</div>
-      </div>
-      <div id="streamLive" style="display:none;">
-        <div class="stream-title-bar">
-          <div class="stream-live-badge"><div class="stream-live-dot"></div>EN DIRECT</div>
-          <span style="font-size:.85rem;font-weight:700;color:var(--text-d);flex:1;" id="streamTitle"></span>
+    <div class="wrap">
+      <div class="sec-header"><span class="sec-icon">🏆</span><h2>Hall of Fame</h2><div class="sec-line"></div></div>
+      <div class="lb-grid">
+        <div class="lb-box">
+          <div class="lb-hd"><span class="lb-hd-ico">⏱️</span><span class="lb-hd-t">Temps de Jeu</span></div>
+          <div class="podium-wrap" id="lb-time"></div>
         </div>
-        <iframe class="stream-embed" id="streamEmbed" src="" allowfullscreen></iframe>
+        <div class="lb-box">
+          <div class="lb-hd"><span class="lb-hd-ico">☠️</span><span class="lb-hd-t" style="color:var(--sun);">Boss Uniques</span></div>
+          <div class="podium-wrap" id="lb-boss"></div>
+        </div>
+        <div class="lb-box">
+          <div class="lb-hd"><span class="lb-hd-ico">🗺️</span><span class="lb-hd-t" style="color:var(--explore);">Exploration</span></div>
+          <div class="podium-wrap" id="lb-chunks"></div>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-
 </div>
 
-<!-- PAGE JOUEURS -->
 <div class="page" id="page-joueurs">
-<div class="players-page"><div class="wrap">
-  <div class="sec-header"><span class="sec-icon">👥</span><h2>Tous les Aventuriers</h2><div class="sec-line"></div></div>
-  <p style="font-size:.9rem;font-weight:600;color:var(--text-d);margin-bottom:24px;text-align:center;">Cliquez sur un aventurier pour consulter ses chroniques.</p>
-  <div class="pg" id="pgrid"></div>
-</div></div>
+  <div class="wrap" style="padding-top:100px;">
+    <div class="sec-header"><h2>Aventuriers</h2><div class="sec-line"></div></div>
+    <div id="pgrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:16px;"></div>
+  </div>
 </div>
 
-<!-- PAGE PROFIL -->
 <div class="page" id="page-profil">
-<div class="profile-page"><div class="wrap">
-  <div class="back" onclick="goTo('joueurs')">← Retour aux aventuriers</div>
-  <div class="prof-hdr">
-    <img class="prof-av" id="pav" src="" alt="">
-    <div>
-      <div class="prof-name" id="pname">—</div>
-      <div class="prof-rank" id="prank">—</div>
-      <div class="team-tag" id="pteam">...</div>
-      <div class="prof-uuid" id="puuid">—</div>
+  <div class="wrap" style="padding-top:100px;">
+    <div onclick="goTo('joueurs')" style="cursor:pointer; color:var(--text-d); margin-bottom:20px;">← Retour</div>
+    <div style="display:flex; gap:20px; align-items:center;">
+      <img id="pav" style="width:100px; height:100px; border-radius:10px; background:var(--bg2);">
+      <div>
+        <h2 id="pname" style="font-family:'Fredoka One'; font-size:2rem; color:var(--sun-l);"></h2>
+        <div id="pteam" style="font-weight:700; color:var(--text-d);"></div>
+      </div>
     </div>
-  </div>
-  <div class="psg">
-    <div class="psc fade-up s1"><div class="psc-ico">⏳</div><div class="psc-lbl">Temps de Jeu</div><div class="psc-val" id="p-time">—</div></div>
-    <div class="psc bl fade-up s2"><div class="psc-ico">⚔️</div><div class="psc-lbl">Ratio K/D</div><div class="psc-val" id="p-kd">—</div><div class="psc-sub" id="p-kdsub">—</div></div>
-    <div class="psc cl fade-up s3"><div class="psc-ico">☠️</div><div class="psc-lbl">Boss Tués</div><div class="psc-val" id="p-cata">—</div></div>
-  </div>
-  <div class="sec-header"><span class="sec-icon">📋</span><h2>FTB Quests</h2><div class="sec-line"></div></div>
-  <div class="quest-box fade-up">
-    <div class="quest-top"><span class="qt-t">🗂️ Quêtes complétées</span><span class="qt-f" id="p-qfrac">— / —</span></div>
-    <div class="qt-track"><div class="qt-fill" id="p-qbar" style="width:0%"></div></div>
-    <div class="qt-pct" id="p-qpct">—%</div>
-  </div>
-  <div class="sec-header"><span class="sec-icon">☠️</span><h2>Boss &amp; Donjons</h2><div class="sec-line"></div></div>
-  <div class="fade-up" id="p-bosses"></div>
+    
+    <div class="psg">
+      <div class="psc"><div>⏳</div><div style="font-size:.7rem; font-weight:800; color:var(--text-d);">TEMPS DE JEU</div><div class="psc-val" id="p-time"></div></div>
+      <div class="psc ex"><div>🗺️</div><div style="font-size:.7rem; font-weight:800; color:var(--text-d);">CHUNKS CHARGÉS</div><div class="psc-val" id="p-chunks"></div></div>
+      <div class="psc" style="border-left-color:var(--red);"><div>⚔️</div><div style="font-size:.7rem; font-weight:800; color:var(--text-d);">RATIO K/D</div><div class="psc-val" id="p-kd"></div></div>
+    </div>
 
-  <div class="sec-header"><span class="sec-icon">✨</span><h2>Sorts Iron's Spells</h2><div class="sec-line"></div></div>
-  <div class="fade-up" id="p-spells"></div>
+    <div class="sec-header"><h2>Progression Quêtes</h2><div class="sec-line"></div></div>
+    <div class="quest-box">
+      <div style="display:flex; justify-content:space-between; font-weight:800;">
+        <span>FTB Quests</span>
+        <span id="p-qfrac"></span>
+      </div>
+      <div class="qt-track"><div class="qt-fill" id="p-qbar"></div></div>
+    </div>
 
-  <div style="height:40px;"></div>
-</div></div>
+    <div class="sec-header"><h2>Boss Vaincus</h2><div class="sec-line"></div></div>
+    <div id="p-bosses"></div>
+
+    <div class="sec-header"><h2>Sorts Iron's Spells</h2><div class="sec-line"></div></div>
+    <div id="p-spells"></div>
+  </div>
 </div>
 
-<footer><span>⚔</span> All The Mods 10 — Kotek <span>⚔</span> srv01.uniheberg.fr:25505 <span>⚔</span></footer>
+<footer><span>⚔</span> All The Mods 10 — Kotek <span>⚔</span></footer>
 
 <script>
 const BOSS_REGISTRY=[
   {id:"minecraft:ender_dragon",name:"Ender Dragon",icon:"🐉",mod:"vanilla",modName:"Vanilla"},
   {id:"minecraft:wither",name:"Wither",icon:"💀",mod:"vanilla",modName:"Vanilla"},
-  {id:"minecraft:warden",name:"Warden",icon:"🌑",mod:"vanilla",modName:"Vanilla"},
-  {id:"cataclysm:the_harbinger",name:"The Harbinger",icon:"⚡",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:netherite_monstrosity",name:"Netherite Monstrosity",icon:"🔩",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:the_leviathan",name:"The Leviathan",icon:"🌊",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:ancient_remnant",name:"Ancient Remnant",icon:"🦴",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:ender_golem",name:"Ender Guardian",icon:"🌀",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:ignis",name:"Ignis",icon:"🔥",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:avaricia",name:"Avaricia",icon:"💰",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:necronomicon",name:"Necronomicon",icon:"📖",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"cataclysm:nameless_one",name:"The Nameless One",icon:"👁️",mod:"cataclysm",modName:"L'Ender's Cataclysm"},
-  {id:"twilightforest:naga",name:"Naga",icon:"🐍",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:twilight_lich",name:"Twilight Lich",icon:"🧙",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:hydra",name:"Hydra",icon:"🔱",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:ur_ghast",name:"Ur-Ghast",icon:"👻",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:minoshroom",name:"Minoshroom",icon:"🍄",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:snow_queen",name:"Snow Queen",icon:"❄️",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:knight_phantom",name:"Knight Phantom",icon:"⚔️",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"twilightforest:alpha_yeti",name:"Alpha Yeti",icon:"🏔️",mod:"twilight",modName:"The Twilight Forest"},
-  {id:"aether:slider",name:"Slider (Bronze)",icon:"🟫",mod:"aether",modName:"The Aether"},
-  {id:"aether:valkyrie_queen",name:"Valkyrie Queen",icon:"🗡️",mod:"aether",modName:"The Aether"},
-  {id:"aether:sun_spirit",name:"Sun Spirit",icon:"☀️",mod:"aether",modName:"The Aether"},
-  {id:"blue_skies:summoner",name:"Summoner",icon:"🔮",mod:"blueskies",modName:"Blue Skies"},
-  {id:"blue_skies:alchemist",name:"Alchemist",icon:"⚗️",mod:"blueskies",modName:"Blue Skies"},
-  {id:"blue_skies:starlit_crusher",name:"Starlit Crusher",icon:"⭐",mod:"blueskies",modName:"Blue Skies"},
-  {id:"blue_skies:arachnarch",name:"Arachnarch",icon:"🕷️",mod:"blueskies",modName:"Blue Skies"},
-  {id:"ars_nouveau:wilden_chimera",name:"Wilden Chimera",icon:"🦁",mod:"arsnouv",modName:"Ars Nouveau"},
+  {id:"cataclysm:ignis",name:"Ignis",icon:"🔥",mod:"cataclysm",modName:"Cataclysm"},
+  {id:"cataclysm:avaricia",name:"Avaricia",icon:"💰",mod:"cataclysm",modName:"Cataclysm"},
+  {id:"twilightforest:naga",name:"Naga",icon:"🐍",mod:"twilight",modName:"Twilight Forest"}
 ];
 const BOSS_MAP=Object.fromEntries(BOSS_REGISTRY.map(b=>[b.id,b]));
-const MOD_ORDER=["vanilla","cataclysm","twilight","aether","blueskies","arsnouv"];
-const MOD_ICONS={vanilla:"⚔️",cataclysm:"🌋",twilight:"🌲",aether:"☁️",blueskies:"🌠",arsnouv:"🪄"};
 
-function getKilledBossMap(p){
-  const result={};
-  const raw=p.stats?.["minecraft:killed"]||{};
-  for(const[id,count]of Object.entries(raw)){if(count>0&&BOSS_MAP[id])result[id]=count;}
-  if(!Object.keys(result).length&&p.bosses?.length){
-    for(const b of p.bosses){
-      const name=(b.name||'').toLowerCase();
-      let entry=BOSS_REGISTRY.find(r=>r.name.toLowerCase()===name);
-      if(!entry)entry=BOSS_REGISTRY.find(r=>r.name.toLowerCase().includes(name.split(' ')[0]));
-      if(entry&&b.count>0)result[entry.id]=(result[entry.id]||0)+b.count;
-    }
-  }
-  return result;
-}
-function bossTotal(p){return Object.values(getKilledBossMap(p)).reduce((s,n)=>s+n,0);}
-
-/* ══ IRON'S SPELLS REGISTRY ══ */
-const SCHOOL_INFO={
-  blood:    {label:"Blood",     icon:"🩸",cls:"school-blood"},
-  fire:     {label:"Fire",      icon:"🔥",cls:"school-fire"},
-  ice:      {label:"Ice",       icon:"❄️", cls:"school-ice"},
-  lightning:{label:"Lightning", icon:"⚡", cls:"school-lightning"},
-  holy:     {label:"Holy",      icon:"✨",cls:"school-holy"},
-  evocation:{label:"Evocation", icon:"🔮",cls:"school-evocation"},
-  void:     {label:"Void",      icon:"🌌",cls:"school-void"},
-  eldritch: {label:"Eldritch",  icon:"👁️",cls:"school-eldritch"},
-  poison:   {label:"Poison",    icon:"☠️",cls:"school-poison"},
-};
-const SPELL_REGISTRY=[
-  {id:"irons_spellbooks:acupuncture",       name:"Acupuncture",       school:"blood",     maxLevel:10},
-  {id:"irons_spellbooks:blood_needles",     name:"Blood Needles",     school:"blood",     maxLevel:10},
-  {id:"irons_spellbooks:blood_slash",       name:"Blood Slash",       school:"blood",     maxLevel:5},
-  {id:"irons_spellbooks:blood_step",        name:"Blood Step",        school:"blood",     maxLevel:5},
-  {id:"irons_spellbooks:devour",            name:"Devour",            school:"blood",     maxLevel:10},
-  {id:"irons_spellbooks:heartstop",         name:"Heartstop",         school:"blood",     maxLevel:5},
-  {id:"irons_spellbooks:raise_dead",        name:"Raise Dead",        school:"blood",     maxLevel:6},
-  {id:"irons_spellbooks:ray_of_siphoning",  name:"Ray of Siphoning",  school:"blood",     maxLevel:10},
-  {id:"irons_spellbooks:sacrifice",         name:"Sacrifice",         school:"blood",     maxLevel:5},
-  {id:"irons_spellbooks:wither_skull",      name:"Wither Skull",      school:"blood",     maxLevel:10},
-  {id:"irons_spellbooks:blaze_storm",       name:"Blaze Storm",       school:"fire",      maxLevel:10},
-  {id:"irons_spellbooks:burning_dash",      name:"Burning Dash",      school:"fire",      maxLevel:5},
-  {id:"irons_spellbooks:fireball",          name:"Fireball",          school:"fire",      maxLevel:10},
-  {id:"irons_spellbooks:fire_breath",       name:"Fire Breath",       school:"fire",      maxLevel:5},
-  {id:"irons_spellbooks:flaming_strike",    name:"Flaming Strike",    school:"fire",      maxLevel:10},
-  {id:"irons_spellbooks:magma_bomb",        name:"Magma Bomb",        school:"fire",      maxLevel:10},
-  {id:"irons_spellbooks:meteor_shower",     name:"Meteor Shower",     school:"fire",      maxLevel:5},
-  {id:"irons_spellbooks:wall_of_fire",      name:"Wall of Fire",      school:"fire",      maxLevel:5},
-  {id:"irons_spellbooks:blizzard",          name:"Blizzard",          school:"ice",       maxLevel:5},
-  {id:"irons_spellbooks:frostbite",         name:"Frostbite",         school:"ice",       maxLevel:10},
-  {id:"irons_spellbooks:frost_step",        name:"Frost Step",        school:"ice",       maxLevel:5},
-  {id:"irons_spellbooks:ice_lance",         name:"Ice Lance",         school:"ice",       maxLevel:10},
-  {id:"irons_spellbooks:icy_veins",         name:"Icy Veins",         school:"ice",       maxLevel:5},
-  {id:"irons_spellbooks:snowstorm",         name:"Snowstorm",         school:"ice",       maxLevel:10},
-  {id:"irons_spellbooks:splitting_ice",     name:"Splitting Ice",     school:"ice",       maxLevel:10},
-  {id:"irons_spellbooks:summon_polar_bear", name:"Summon Polar Bear", school:"ice",       maxLevel:5},
-  {id:"irons_spellbooks:chain_lightning",   name:"Chain Lightning",   school:"lightning", maxLevel:10},
-  {id:"irons_spellbooks:lightning_lance",   name:"Lightning Lance",   school:"lightning", maxLevel:10},
-  {id:"irons_spellbooks:static_smash",      name:"Static Smash",      school:"lightning", maxLevel:10},
-  {id:"irons_spellbooks:thunder_step",      name:"Thunder Step",      school:"lightning", maxLevel:5},
-  {id:"irons_spellbooks:thunderstruck",     name:"Thunderstruck",     school:"lightning", maxLevel:5},
-  {id:"irons_spellbooks:angel_wings",       name:"Angel Wings",       school:"holy",      maxLevel:5},
-  {id:"irons_spellbooks:divine_smite",      name:"Divine Smite",      school:"holy",      maxLevel:10},
-  {id:"irons_spellbooks:guiding_bolt",      name:"Guiding Bolt",      school:"holy",      maxLevel:10},
-  {id:"irons_spellbooks:healing_circle",    name:"Healing Circle",    school:"holy",      maxLevel:5},
-  {id:"irons_spellbooks:heal",              name:"Heal",              school:"holy",      maxLevel:10},
-  {id:"irons_spellbooks:holy_lance",        name:"Holy Lance",        school:"holy",      maxLevel:10},
-  {id:"irons_spellbooks:mana_shield",       name:"Mana Shield",       school:"holy",      maxLevel:5},
-  {id:"irons_spellbooks:revive",            name:"Revive",            school:"holy",      maxLevel:5},
-  {id:"irons_spellbooks:sunbeam",           name:"Sunbeam",           school:"holy",      maxLevel:5},
-  {id:"irons_spellbooks:counterspell",      name:"Counterspell",      school:"evocation", maxLevel:5},
-  {id:"irons_spellbooks:gust",              name:"Gust",              school:"evocation", maxLevel:5},
-  {id:"irons_spellbooks:magic_arrow",       name:"Magic Arrow",       school:"evocation", maxLevel:10},
-  {id:"irons_spellbooks:magic_missile",     name:"Magic Missile",     school:"evocation", maxLevel:10},
-  {id:"irons_spellbooks:summon_horse",      name:"Summon Horse",      school:"evocation", maxLevel:5},
-  {id:"irons_spellbooks:telekinesis",       name:"Telekinesis",       school:"evocation", maxLevel:5},
-  {id:"irons_spellbooks:wisp",              name:"Wisp",              school:"evocation", maxLevel:5},
-  {id:"irons_spellbooks:black_hole",        name:"Black Hole",        school:"void",      maxLevel:5},
-  {id:"irons_spellbooks:blink",             name:"Blink",             school:"void",      maxLevel:10},
-  {id:"irons_spellbooks:void_tentacles",    name:"Void Tentacles",    school:"void",      maxLevel:5},
-  {id:"irons_spellbooks:wormhole",          name:"Wormhole",          school:"void",      maxLevel:5},
-  {id:"irons_spellbooks:abyssal_shroud",    name:"Abyssal Shroud",    school:"eldritch",  maxLevel:3},
-  {id:"irons_spellbooks:eldritch_blast",    name:"Eldritch Blast",    school:"eldritch",  maxLevel:5},
-  {id:"irons_spellbooks:planar_sight",      name:"Planar Sight",      school:"eldritch",  maxLevel:3},
-  {id:"irons_spellbooks:acid_orb",          name:"Acid Orb",          school:"poison",    maxLevel:10},
-  {id:"irons_spellbooks:poison_breath",     name:"Poison Breath",     school:"poison",    maxLevel:5},
-  {id:"irons_spellbooks:spider_aspect",     name:"Spider Aspect",     school:"poison",    maxLevel:5},
-  {id:"irons_spellbooks:vine_whip",         name:"Vine Whip",         school:"poison",    maxLevel:10},
-];
-const SPELL_MAP=Object.fromEntries(SPELL_REGISTRY.map(s=>[s.id,s]));
-
-function getPlayerSpells(p){
-  // Source principale : p.spells exporté par sync (extrait des advancements irons_spellbooks:)
-  if(p.spells?.length) return p.spells;
-  // Fallback : chercher dans les stats brutes si disponibles
-  const used=p.stats?.["irons_spellbooks:spell_cast"]||{};
-  return Object.keys(used).filter(id=>SPELL_MAP[id]).map(id=>({id,level:1}));
-}
-
-const MOCK={
-  server:{online:true,host:"srv01.uniheberg.fr:25505"},
-  players:[
-    {name:"Theronak",uuid:"8667ba71",playtime_ticks:22521600,playtime_human:"312h 44min",
-     mobs_killed:18472,deaths:47,kd:"392.8",ftb_quests_done:312,ftb_quests_total:450,
-     bosses:[{name:"Avaricia",icon:"💰",count:12},{name:"Ignis",icon:"🔥",count:3},{name:"Naga",icon:"🐍",count:1}],
-     spells:[{id:"irons_spellbooks:fireball",level:7},{id:"irons_spellbooks:magic_missile",level:5},{id:"irons_spellbooks:blaze_storm",level:4},{id:"irons_spellbooks:chain_lightning",level:3},{id:"irons_spellbooks:heal",level:6},{id:"irons_spellbooks:blink",level:2}]},
-    {name:"Lyraveth",uuid:"c3f8a912",playtime_ticks:17366400,playtime_human:"241h 12min",
-     mobs_killed:9284,deaths:89,kd:"104.3",ftb_quests_done:198,ftb_quests_total:450,
-     bosses:[{name:"Avaricia",icon:"💰",count:6}],
-     spells:[{id:"irons_spellbooks:ice_lance",level:8},{id:"irons_spellbooks:blizzard",level:5},{id:"irons_spellbooks:healing_circle",level:3}]},
-    {name:"Durrak",uuid:"5e2b1d04",playtime_ticks:14256000,playtime_human:"198h 05min",
-     mobs_killed:22105,deaths:31,kd:"713.1",ftb_quests_done:421,ftb_quests_total:450,
-     bosses:[{name:"Avaricia",icon:"💰",count:19},{name:"Ignis",icon:"🔥",count:5}],
-     spells:[{id:"irons_spellbooks:blood_slash",level:5},{id:"irons_spellbooks:raise_dead",level:4},{id:"irons_spellbooks:wither_skull",level:9},{id:"irons_spellbooks:eldritch_blast",level:3}]},
-    {name:"Seraphel",uuid:"9a4c77b3",playtime_ticks:6303600,playtime_human:"87h 33min",
-     mobs_killed:3442,deaths:122,kd:"28.2",ftb_quests_done:64,ftb_quests_total:450,bosses:[],spells:[]},
-    {name:"Vortan",uuid:"2f6e3a88",playtime_ticks:11253600,playtime_human:"156h 21min",
-     mobs_killed:11930,deaths:58,kd:"205.7",ftb_quests_done:155,ftb_quests_total:450,
-     bosses:[{name:"Ignis",icon:"🔥",count:6}],spells:[{id:"irons_spellbooks:lightning_lance",level:6},{id:"irons_spellbooks:thunder_step",level:4}]},
-    {name:"Mira",uuid:"7d1b5f22",playtime_ticks:1594800,playtime_human:"22h 08min",
-     mobs_killed:872,deaths:48,kd:"18.2",ftb_quests_done:12,ftb_quests_total:450,bosses:[],spells:[]},
-  ]
+const SPELL_MAP={
+  "irons_spellbooks:fireball": {name:"Fireball", school:"Fire", maxLevel:10},
+  "irons_spellbooks:heal": {name:"Heal", school:"Holy", maxLevel:10},
+  "irons_spellbooks:blink": {name:"Blink", school:"Void", maxLevel:10}
 };
 
-let DATA=null;
+let DATA = null;
+const g = id => document.getElementById(id);
+
 async function load(){
-  try{const r=await fetch('data.json?t='+Date.now());if(!r.ok)throw 0;DATA=await r.json();}
-  catch{DATA=MOCK;}
-  renderAll();
+  try{
+    const r = await fetch('data.json?t='+Date.now());
+    DATA = await r.json();
+    renderAll();
+  }catch(e){ console.error(e); }
 }
 
-const g=id=>document.getElementById(id);
 function goTo(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
   g('page-'+p).classList.add('active');
-  const t=g('tab-'+p);if(t)t.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo(0,0);
 }
 
-const RANKS=[{min:200,l:"Archimage Suprême"},{min:150,l:"Maître des Arcanes"},{min:100,l:"Forgeron Légendaire"},{min:50,l:"Aventurier Chevronné"},{min:0,l:"Novice Intrépide"}];
-const rank=h=>RANKS.find(r=>h>=r.min)?.l||"Novice";
-const hours=t=>Math.floor((t||0)/20/3600);
+// Logic Boss Uniques
+function bossUniqueCount(p) {
+  const killed = p.stats?.["minecraft:killed"] || {};
+  return Object.keys(killed).filter(id => BOSS_MAP[id]).length;
+}
 
 function renderAll(){
-  const pl=DATA.players||[];
-  g('g-time').textContent=Math.floor(pl.reduce((a,p)=>a+(p.playtime_ticks||0),0)/20/3600).toLocaleString('fr-FR')+' h';
-  g('g-deaths').textContent=pl.reduce((a,p)=>a+(p.deaths||0),0).toLocaleString('fr-FR');
-  renderScroll(pl);renderLB(pl);renderJoueurs(pl);
-}
-
-function renderScroll(pl){
-  const t=g('scrollTrack');t.innerHTML='';
-  [...pl,...pl].forEach(p=>{
-    const d=document.createElement('div');d.className='sp';d.onclick=()=>openProfile(p.uuid);
-    d.innerHTML=`<img class="sp-h" src="https://mc-heads.net/avatar/${p.uuid}/56" alt="${p.name}" onerror="this.style.opacity='.3'"><div class="sp-n">${p.name}</div>`;
-    t.appendChild(d);
-  });
-}
-
-function makePodium(sorted,valFn,rawFn,id){
-  const wrap=g(id);wrap.innerHTML='';
-  const top3=sorted.filter(p=>rawFn(p)>0).slice(0,3);
-  if(!top3.length){wrap.innerHTML='<div style="padding:24px;text-align:center;color:var(--text-d);font-size:.85rem;font-weight:600;">Aucune donnée</div>';return;}
-  const order=top3.length>=2?[top3[1],top3[0],top3[2]].filter(Boolean):[top3[0]];
-  const rmap=top3.length>=2?[2,1,3]:[1];
-  const w2=document.createElement('div');w2.className='podium-wrap';
-  order.forEach((p,idx)=>{
-    const rk=rmap[idx];const medals=['','👑','🥈','🥉'];
-    const col=document.createElement('div');col.className=`podium-col rank-${rk}`;col.onclick=()=>openProfile(p.uuid);
-    col.innerHTML=`<div class="podium-player"><div class="podium-medal">${medals[rk]}</div><img class="podium-av" src="https://mc-heads.net/avatar/${p.uuid}/64" alt="${p.name}" onerror="this.style.opacity='.3'"><div class="podium-name">${p.name}</div><div class="podium-val">${valFn(p)}</div></div><div class="podium-stage"></div>`;
-    w2.appendChild(col);
-  });
-  wrap.appendChild(w2);
+  const pl = DATA.players || [];
+  renderLB(pl);
+  renderJoueurs(pl);
 }
 
 function renderLB(pl){
-  const byTime=[...pl].sort((a,b)=>(b.playtime_ticks||0)-(a.playtime_ticks||0));
-  makePodium(byTime,p=>p.playtime_human||'—',p=>p.playtime_ticks||0,'lb-time');
-  const byBoss=[...pl].sort((a,b)=>bossTotal(b)-bossTotal(a));
-  makePodium(byBoss,p=>{const t=bossTotal(p);return t>0?'×'+t.toLocaleString('fr-FR'):'—';},bossTotal,'lb-boss');
+  // Temps
+  makePodium([...pl].sort((a,b)=>(b.playtime_ticks||0)-(a.playtime_ticks||0)), p=>p.playtime_human, p=>p.playtime_ticks, 'lb-time');
+  
+  // Boss Uniques
+  const byBoss = [...pl].sort((a,b)=>bossUniqueCount(b)-bossUniqueCount(a));
+  makePodium(byBoss, p => bossUniqueCount(p) + ' boss', bossUniqueCount, 'lb-boss');
+  
+  // Chunks
+  const byChunks = [...pl].sort((a,b)=>(b.chunks_loaded||0)-(a.chunks_loaded||0));
+  makePodium(byChunks, p => (p.chunks_loaded||0).toLocaleString() + ' ch', p => p.chunks_loaded, 'lb-chunks');
+}
+
+function makePodium(sorted, valFn, rawFn, id){
+  const wrap = g(id); wrap.innerHTML = '';
+  const top3 = sorted.filter(p=>rawFn(p)>0).slice(0,3);
+  if(!top3.length) { wrap.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-dd);">Aucune donnée</div>'; return; }
+  
+  top3.forEach((p,i) => {
+    const d = document.createElement('div');
+    d.className = `podium-col rank-${i+1}`;
+    d.onclick = () => openProfile(p.uuid);
+    d.innerHTML = `
+      <img class="podium-av" src="https://mc-heads.net/avatar/${p.uuid}/64">
+      <div class="podium-name">${p.name}</div>
+      <div class="podium-val">${valFn(p)}</div>
+    `;
+    wrap.appendChild(d);
+  });
 }
 
 function renderJoueurs(pl){
-  const grid=g('pgrid');grid.innerHTML='';
-  pl.forEach((p,i)=>{
-    const d=document.createElement('div');d.className='pt';d.style.animationDelay=(i*.04)+'s';d.onclick=()=>openProfile(p.uuid);
-    d.innerHTML=`<img class="pt-h" src="https://mc-heads.net/avatar/${p.uuid}/70" alt="${p.name}" onerror="this.style.opacity='.3'"><div class="pt-nm">${p.name}</div><div class="pt-pt">${p.playtime_human||'—'}</div><div class="pt-hint"><span>Voir le profil →</span></div>`;
+  const grid = g('pgrid'); grid.innerHTML = '';
+  pl.forEach(p => {
+    const d = document.createElement('div');
+    d.style = "background:var(--card); padding:20px; border-radius:10px; text-align:center; cursor:pointer;";
+    d.onclick = () => openProfile(p.uuid);
+    d.innerHTML = `<img src="https://mc-heads.net/avatar/${p.uuid}/64" style="width:64px; margin-bottom:10px;"><div style="font-weight:800;">${p.name}</div>`;
     grid.appendChild(d);
   });
 }
 
 function openProfile(uuid){
-  const p=(DATA.players||[]).find(x=>x.uuid===uuid);if(!p)return;
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
-  g('page-profil').classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  g('pav').src=`https://mc-heads.net/avatar/${p.uuid}/120`;
-  g('pname').textContent=p.name;
-  g('prank').textContent=rank(hours(p.playtime_ticks));
-  g('puuid').textContent='UUID: '+p.uuid;
-  const teamEl=g('pteam');
-  const teamName=p.team||(DATA.teams?.[p.uuid])||null;
-  if(teamName){teamEl.textContent='⚑ '+teamName;teamEl.className='team-tag';}
-  else{teamEl.textContent='👤 Solitaire';teamEl.className='team-tag solo';}
-  g('p-time').textContent=p.playtime_human||'—';
-  g('p-kd').textContent=p.kd||'—';
-  g('p-kdsub').textContent=(p.mobs_killed||0).toLocaleString('fr-FR')+' mobs · '+(p.deaths||0)+' morts';
-  g('p-cata').textContent=bossTotal(p).toLocaleString('fr-FR')||'0';
-  // ── FTB QUESTS ──
-  const allPl=DATA.players||[];
-  // Utilise ftb_quests si dispo, sinon fallback advancements
-  const ftbDone = p.ftb_quests_done ?? p.advancements_done ?? 0;
-  const ftbTotal = p.ftb_quests_total > 1 ? p.ftb_quests_total
-                 : Math.max(...allPl.map(x=>x.ftb_quests_total||x.advancements_total||0), 1);
-  const pct = ftbTotal > 0 ? Math.round(ftbDone / ftbTotal * 100) : 0;
-  g('p-qfrac').textContent = ftbDone + ' / ' + ftbTotal;
-  g('p-qbar').style.width='0%';
-  setTimeout(()=>{g('p-qbar').style.width=Math.min(pct,100)+'%';},120);
-  g('p-qpct').textContent = pct + '%';
+  const p = DATA.players.find(x=>x.uuid===uuid);
+  goTo('profil');
+  g('pav').src = `https://mc-heads.net/avatar/${p.uuid}/100`;
+  g('pname').textContent = p.name;
+  g('pteam').textContent = p.team ? '⚐ ' + p.team : '👤 Solo';
+  g('p-time').textContent = p.playtime_human;
+  g('p-chunks').textContent = (p.chunks_loaded || 0).toLocaleString(); //
+  g('p-kd').textContent = p.kd;
 
-  // ── BOSS — accordion par mod ──
-  const bossWrap=g('p-bosses'); bossWrap.innerHTML='';
-  const killed=getKilledBossMap(p);
-  const acc=document.createElement('div'); acc.className='accordion';
+  // FTB Quests fix
+  const qDone = p.ftb_quests_done || 0;
+  const qTotal = p.ftb_quests_total || 1;
+  const pct = Math.round((qDone/qTotal)*100);
+  g('p-qfrac').textContent = `${qDone} / ${qTotal}`;
+  g('p-qbar').style.width = pct + '%';
 
-  MOD_ORDER.forEach(modKey=>{
-    const entries=BOSS_REGISTRY.filter(b=>b.mod===modKey);
-    if(!entries.length) return;
-    const doneCount=entries.filter(b=>killed[b.id]).length;
-
-    const group=document.createElement('div'); group.className='acc-group';
-    const btn=document.createElement('button'); btn.className='acc-trigger'; btn.setAttribute('aria-expanded','false');
-    btn.innerHTML=`<span class="acc-mod-icon">${MOD_ICONS[modKey]}</span><span class="acc-mod-name">${entries[0].modName}</span><span class="acc-prog">${doneCount}/${entries.length}</span><span class="acc-arrow">▶</span>`;
-    const body=document.createElement('div'); body.className='acc-body';
-
-    // Vaincus en premier, restants ensuite
-    [...entries.filter(b=>killed[b.id]), ...entries.filter(b=>!killed[b.id])].forEach(b=>{
-      const isDone=!!killed[b.id]; const count=killed[b.id]||0;
-      const row=document.createElement('div'); row.className='acc-entry '+(isDone?'done':'todo');
-      row.innerHTML=`<div class="ae-icon">${b.icon}</div><div class="ae-info"><div class="ae-name">${b.name}</div><div class="ae-sub">${isDone?'×'+count+' tué'+(count>1?'s':''):'Non vaincu'}</div></div><div class="ae-check">${isDone?'✅':'❌'}</div>`;
-      body.appendChild(row);
-    });
-
-    btn.onclick=()=>{
-      const open=btn.getAttribute('aria-expanded')==='true';
-      btn.setAttribute('aria-expanded',open?'false':'true');
-      body.classList.toggle('open',!open);
-    };
-    group.appendChild(btn); group.appendChild(body);
-    acc.appendChild(group);
-  });
-  bossWrap.appendChild(acc);
-
-  // ── SORTS Iron's Spells — accordion par école ──
-  const spellsWrap=g('p-spells'); spellsWrap.innerHTML='';
-  const playerSpells=getPlayerSpells(p);
-
-  if(!playerSpells.length){
-    const empty=document.createElement('div'); empty.className='acc-empty';
-    empty.textContent="Aucun sort Iron's Spells trouvé pour ce joueur.";
-    spellsWrap.appendChild(empty);
-  } else {
-    const sacc=document.createElement('div'); sacc.className='accordion';
-    // Grouper par école
-    const bySchool={};
-    playerSpells.forEach(s=>{
-      const info=SPELL_MAP[s.id]; if(!info) return;
-      if(!bySchool[info.school]) bySchool[info.school]=[];
-      bySchool[info.school].push({...info, level:s.level});
-    });
-    const schoolOrder=['blood','fire','ice','lightning','holy','evocation','void','eldritch','poison'];
-    schoolOrder.forEach(sk=>{
-      if(!bySchool[sk]?.length) return;
-      const sc=SCHOOL_INFO[sk];
-      const group=document.createElement('div'); group.className='acc-group';
-      const btn=document.createElement('button'); btn.className='acc-trigger'; btn.setAttribute('aria-expanded','false');
-      btn.innerHTML=`<span class="acc-mod-icon">${sc.icon}</span><span class="acc-mod-name">${sc.label}</span><span class="acc-prog">${bySchool[sk].length} sort${bySchool[sk].length>1?'s':''}</span><span class="acc-arrow">▶</span>`;
-      const body=document.createElement('div'); body.className='acc-body';
-      bySchool[sk].forEach(s=>{
-        const row=document.createElement('div'); row.className='acc-entry done';
-        row.innerHTML=`<div class="ae-icon">${sc.icon}</div><div class="ae-info"><span class="ae-school-badge ${sc.cls}">${sc.label}</span><div class="ae-name">${s.name}</div><div class="ae-sub">Niveau ${s.level} / ${s.maxLevel}</div></div><div class="ae-check">✨</div>`;
-        body.appendChild(row);
-      });
-      btn.onclick=()=>{
-        const open=btn.getAttribute('aria-expanded')==='true';
-        btn.setAttribute('aria-expanded',open?'false':'true');
-        body.classList.toggle('open',!open);
-      };
-      group.appendChild(btn); group.appendChild(body);
-      sacc.appendChild(group);
-    });
-    spellsWrap.appendChild(sacc);
-  }
+  // Boss & Sorts (Simplified render)
+  g('p-bosses').innerHTML = p.bosses.map(b => `<div style="padding:10px; background:var(--card2); margin-bottom:5px; border-radius:5px;">${b.icon} ${b.name} x${b.count}</div>`).join('') || 'Aucun boss';
+  
+  g('p-spells').innerHTML = p.spells.map(s => {
+    const info = SPELL_MAP[s.id] || {name: s.id, school: 'Unknown', maxLevel: '?'};
+    return `<div style="padding:10px; background:var(--card2); margin-bottom:5px; border-radius:5px;">✨ <b>${info.name}</b> (Niveau ${s.level} / ${info.maxLevel})</div>`;
+  }).join('') || 'Aucun sort';
 }
 
-function updateCountdown(){
-  const diff=new Date('2026-04-07T00:00:00+02:00')-new Date();
-  const ct=document.getElementById('cdTimer');if(!ct)return;
-  if(diff<=0){ct.innerHTML='<span class="cd-expired">Le serveur Kotek a fermé ses portes. Merci ! 🏰</span>';return;}
-  const pad=n=>String(n).padStart(2,'0');const e=id=>document.getElementById(id);
-  if(e('cd-d'))e('cd-d').textContent=pad(Math.floor(diff/86400000));
-  if(e('cd-h'))e('cd-h').textContent=pad(Math.floor((diff%86400000)/3600000));
-  if(e('cd-m'))e('cd-m').textContent=pad(Math.floor((diff%3600000)/60000));
-  if(e('cd-s'))e('cd-s').textContent=pad(Math.floor((diff%60000)/1000));
-}
-updateCountdown();setInterval(updateCountdown,1000);
-
-async function checkTwitchStream(){
-  const ch='zeenoow';const of2=g('streamOffline');const lv=g('streamLive');const em=g('streamEmbed');const ti=g('streamTitle');
-  if(!of2||!lv)return;
-  try{
-    const r=await fetch(`https://decapi.me/twitch/uptime/${ch}`,{signal:AbortSignal.timeout(5000)});
-    const txt=await r.text();
-    const isLive=!txt.toLowerCase().includes('offline')&&!txt.toLowerCase().includes('error');
-    if(isLive){
-      let title='Live Minecraft';
-      try{const tr=await fetch(`https://decapi.me/twitch/title/${ch}`,{signal:AbortSignal.timeout(5000)});title=(await tr.text()).trim();}catch{}
-      if(title.toLowerCase().includes('minecraft')){
-        of2.style.display='none';lv.style.display='block';ti.textContent=title;
-        em.src=`https://player.twitch.tv/?channel=${ch}&parent=${window.location.hostname||'localhost'}&autoplay=false`;
-      }else{of2.style.display='block';lv.style.display='none';of2.querySelector('.stream-offline-msg').innerHTML=`<strong>ZeeNoow</strong> est en live mais pas sur Minecraft.<br>Pinguez-le sur Discord !`;}
-    }else{of2.style.display='block';lv.style.display='none';}
-  }catch{of2.style.display='block';lv.style.display='none';}
-}
-checkTwitchStream();setInterval(checkTwitchStream,3*60*1000);
-
-window.addEventListener('scroll',()=>{
-  const bg=document.getElementById('heroBg');
-  if(bg)bg.style.transform=`scale(1.05) translateY(${window.scrollY*0.25}px)`;
-});
-
-load();setInterval(load,60000);
+load();
 </script>
 </body>
 </html>
