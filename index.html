@@ -589,11 +589,17 @@ const SPELL_REGISTRY=[
 const SPELL_MAP=Object.fromEntries(SPELL_REGISTRY.map(s=>[s.id,s]));
 
 function getPlayerSpells(p){
-  // Source principale : p.spells exporté par sync (extrait des advancements irons_spellbooks:)
-  if(p.spells?.length) return p.spells;
-  // Fallback : chercher dans les stats brutes si disponibles
-  const used=p.stats?.["irons_spellbooks:spell_cast"]||{};
-  return Object.keys(used).filter(id=>SPELL_MAP[id]).map(id=>({id,level:1}));
+  // Source principale : p.spells exporté par sync depuis advancements "irons_spellbooks:spells/<name>"
+  // On ne garde que les IDs qui existent dans SPELL_MAP (vrais sorts, pas achievements du mod)
+  if(p.spells?.length){
+    const real=p.spells.filter(s=>SPELL_MAP[s.id]);
+    if(real.length) return real;
+  }
+  // Fallback : stats brutes minecraft:used — items qui matchent un ID de sort connu
+  const used=p.stats?.["minecraft:used"]||{};
+  return Object.entries(used)
+    .filter(([id])=>SPELL_MAP[id])
+    .map(([id,count])=>({id,level:1,casts:count}));
 }
 
 const MOCK={
@@ -709,10 +715,12 @@ function openProfile(uuid){
   g('p-cata').textContent=bossTotal(p).toLocaleString('fr-FR')||'0';
   // ── FTB QUESTS ──
   const allPl=DATA.players||[];
-  // Utilise ftb_quests si dispo, sinon fallback advancements
   const ftbDone = p.ftb_quests_done ?? p.advancements_done ?? 0;
-  const ftbTotal = p.ftb_quests_total > 1 ? p.ftb_quests_total
-                 : Math.max(...allPl.map(x=>x.ftb_quests_total||x.advancements_total||0), 1);
+  // ftb_quests_total : prendre la valeur max parmi tous les joueurs (valeur commune de config)
+  // Si tous sont à 0 (sync pas encore fait), fallback sur advancements_total
+  const ftbTotalRaw = Math.max(...allPl.map(x=>x.ftb_quests_total||0));
+  const ftbTotal = ftbTotalRaw > 0 ? ftbTotalRaw
+                 : Math.max(...allPl.map(x=>x.advancements_total||0), 1);
   const pct = ftbTotal > 0 ? Math.round(ftbDone / ftbTotal * 100) : 0;
   g('p-qfrac').textContent = ftbDone + ' / ' + ftbTotal;
   g('p-qbar').style.width='0%';
