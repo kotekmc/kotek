@@ -392,6 +392,10 @@ footer span{color:var(--sun-d);margin:0 6px;}
         <div class="lb-hd"><span class="lb-hd-ico">☠️</span><span class="lb-hd-t orange">Boss Vaincus</span></div>
         <div class="podium-wrap" id="lb-boss"></div>
       </div>
+      <div class="lb-box fade-up s3" style="grid-column:1/-1;">
+        <div class="lb-hd"><span class="lb-hd-ico">🗺️</span><span class="lb-hd-t">Chunks Explorés</span></div>
+        <div class="podium-wrap" id="lb-chunks"></div>
+      </div>
     </div>
   </div>
   </div>
@@ -436,7 +440,6 @@ footer span{color:var(--sun-d);margin:0 6px;}
     <div>
       <div class="prof-name" id="pname">—</div>
       <div class="prof-rank" id="prank">—</div>
-      <div class="team-tag" id="pteam">...</div>
       <div class="prof-uuid" id="puuid">—</div>
     </div>
   </div>
@@ -444,6 +447,7 @@ footer span{color:var(--sun-d);margin:0 6px;}
     <div class="psc fade-up s1"><div class="psc-ico">⏳</div><div class="psc-lbl">Temps de Jeu</div><div class="psc-val" id="p-time">—</div></div>
     <div class="psc bl fade-up s2"><div class="psc-ico">⚔️</div><div class="psc-lbl">Ratio K/D</div><div class="psc-val" id="p-kd">—</div><div class="psc-sub" id="p-kdsub">—</div></div>
     <div class="psc cl fade-up s3"><div class="psc-ico">☠️</div><div class="psc-lbl">Boss Tués</div><div class="psc-val" id="p-cata">—</div></div>
+    <div class="psc fade-up" style="border-left-color:#22d3ee;animation-delay:.2s"><div class="psc-ico">🗺️</div><div class="psc-lbl">Chunks Explorés</div><div class="psc-val" id="p-chunks">—</div></div>
   </div>
   <div class="sec-header"><span class="sec-icon">📋</span><h2>FTB Quests</h2><div class="sec-line"></div></div>
   <div class="quest-box fade-up">
@@ -453,9 +457,6 @@ footer span{color:var(--sun-d);margin:0 6px;}
   </div>
   <div class="sec-header"><span class="sec-icon">☠️</span><h2>Boss &amp; Donjons</h2><div class="sec-line"></div></div>
   <div class="fade-up" id="p-bosses"></div>
-
-  <div class="sec-header"><span class="sec-icon">✨</span><h2>Sorts Iron's Spells</h2><div class="sec-line"></div></div>
-  <div class="fade-up" id="p-spells"></div>
 
   <div style="height:40px;"></div>
 </div></div>
@@ -512,7 +513,13 @@ function getKilledBossMap(p){
   }
   return result;
 }
-function bossTotal(p){return Object.values(getKilledBossMap(p)).reduce((s,n)=>s+n,0);}
+function bossTotal(p){return Object.keys(getKilledBossMap(p)).length;}
+
+function chunksExplored(p){
+  if(p.chunks_explored!=null) return p.chunks_explored;
+  const custom=p.stats?.["minecraft:custom"]||{};
+  return custom["minecraft:chunks_loaded"]||0;
+}
 
 /* ══ IRON'S SPELLS REGISTRY ══ */
 const SCHOOL_INFO={
@@ -589,17 +596,11 @@ const SPELL_REGISTRY=[
 const SPELL_MAP=Object.fromEntries(SPELL_REGISTRY.map(s=>[s.id,s]));
 
 function getPlayerSpells(p){
-  // Source principale : p.spells exporté par sync depuis advancements "irons_spellbooks:spells/<name>"
-  // On ne garde que les IDs qui existent dans SPELL_MAP (vrais sorts, pas achievements du mod)
-  if(p.spells?.length){
-    const real=p.spells.filter(s=>SPELL_MAP[s.id]);
-    if(real.length) return real;
-  }
-  // Fallback : stats brutes minecraft:used — items qui matchent un ID de sort connu
-  const used=p.stats?.["minecraft:used"]||{};
-  return Object.entries(used)
-    .filter(([id])=>SPELL_MAP[id])
-    .map(([id,count])=>({id,level:1,casts:count}));
+  // Source principale : p.spells exporté par sync (extrait des advancements irons_spellbooks:)
+  if(p.spells?.length) return p.spells;
+  // Fallback : chercher dans les stats brutes si disponibles
+  const used=p.stats?.["irons_spellbooks:spell_cast"]||{};
+  return Object.keys(used).filter(id=>SPELL_MAP[id]).map(id=>({id,level:1}));
 }
 
 const MOCK={
@@ -683,7 +684,9 @@ function renderLB(pl){
   const byTime=[...pl].sort((a,b)=>(b.playtime_ticks||0)-(a.playtime_ticks||0));
   makePodium(byTime,p=>p.playtime_human||'—',p=>p.playtime_ticks||0,'lb-time');
   const byBoss=[...pl].sort((a,b)=>bossTotal(b)-bossTotal(a));
-  makePodium(byBoss,p=>{const t=bossTotal(p);return t>0?'×'+t.toLocaleString('fr-FR'):'—';},bossTotal,'lb-boss');
+  makePodium(byBoss,p=>{const t=bossTotal(p);return t>0?t+' boss':'—';},bossTotal,'lb-boss');
+  const byChunks=[...pl].sort((a,b)=>chunksExplored(b)-chunksExplored(a));
+  makePodium(byChunks,p=>{const t=chunksExplored(p);return t>0?t.toLocaleString('fr-FR')+' chunks':'—';},chunksExplored,'lb-chunks');
 }
 
 function renderJoueurs(pl){
@@ -705,19 +708,15 @@ function openProfile(uuid){
   g('pname').textContent=p.name;
   g('prank').textContent=rank(hours(p.playtime_ticks));
   g('puuid').textContent='UUID: '+p.uuid;
-  const teamEl=g('pteam');
-  const teamName=p.team||(DATA.teams?.[p.uuid])||null;
-  if(teamName){teamEl.textContent='⚑ '+teamName;teamEl.className='team-tag';}
-  else{teamEl.textContent='👤 Solitaire';teamEl.className='team-tag solo';}
   g('p-time').textContent=p.playtime_human||'—';
   g('p-kd').textContent=p.kd||'—';
   g('p-kdsub').textContent=(p.mobs_killed||0).toLocaleString('fr-FR')+' mobs · '+(p.deaths||0)+' morts';
   g('p-cata').textContent=bossTotal(p).toLocaleString('fr-FR')||'0';
+  g('p-chunks').textContent=chunksExplored(p).toLocaleString('fr-FR')||'0';
   // ── FTB QUESTS ──
   const allPl=DATA.players||[];
   const ftbDone = p.ftb_quests_done ?? p.advancements_done ?? 0;
-  // ftb_quests_total : prendre la valeur max parmi tous les joueurs (valeur commune de config)
-  // Si tous sont à 0 (sync pas encore fait), fallback sur advancements_total
+  // ftb_quests_total est identique pour tous (valeur de config) — on prend le max
   const ftbTotalRaw = Math.max(...allPl.map(x=>x.ftb_quests_total||0));
   const ftbTotal = ftbTotalRaw > 0 ? ftbTotalRaw
                  : Math.max(...allPl.map(x=>x.advancements_total||0), 1);
@@ -759,47 +758,6 @@ function openProfile(uuid){
     acc.appendChild(group);
   });
   bossWrap.appendChild(acc);
-
-  // ── SORTS Iron's Spells — accordion par école ──
-  const spellsWrap=g('p-spells'); spellsWrap.innerHTML='';
-  const playerSpells=getPlayerSpells(p);
-
-  if(!playerSpells.length){
-    const empty=document.createElement('div'); empty.className='acc-empty';
-    empty.textContent="Aucun sort Iron's Spells trouvé pour ce joueur.";
-    spellsWrap.appendChild(empty);
-  } else {
-    const sacc=document.createElement('div'); sacc.className='accordion';
-    // Grouper par école
-    const bySchool={};
-    playerSpells.forEach(s=>{
-      const info=SPELL_MAP[s.id]; if(!info) return;
-      if(!bySchool[info.school]) bySchool[info.school]=[];
-      bySchool[info.school].push({...info, level:s.level});
-    });
-    const schoolOrder=['blood','fire','ice','lightning','holy','evocation','void','eldritch','poison'];
-    schoolOrder.forEach(sk=>{
-      if(!bySchool[sk]?.length) return;
-      const sc=SCHOOL_INFO[sk];
-      const group=document.createElement('div'); group.className='acc-group';
-      const btn=document.createElement('button'); btn.className='acc-trigger'; btn.setAttribute('aria-expanded','false');
-      btn.innerHTML=`<span class="acc-mod-icon">${sc.icon}</span><span class="acc-mod-name">${sc.label}</span><span class="acc-prog">${bySchool[sk].length} sort${bySchool[sk].length>1?'s':''}</span><span class="acc-arrow">▶</span>`;
-      const body=document.createElement('div'); body.className='acc-body';
-      bySchool[sk].forEach(s=>{
-        const row=document.createElement('div'); row.className='acc-entry done';
-        row.innerHTML=`<div class="ae-icon">${sc.icon}</div><div class="ae-info"><span class="ae-school-badge ${sc.cls}">${sc.label}</span><div class="ae-name">${s.name}</div><div class="ae-sub">Niveau ${s.level} / ${s.maxLevel}</div></div><div class="ae-check">✨</div>`;
-        body.appendChild(row);
-      });
-      btn.onclick=()=>{
-        const open=btn.getAttribute('aria-expanded')==='true';
-        btn.setAttribute('aria-expanded',open?'false':'true');
-        body.classList.toggle('open',!open);
-      };
-      group.appendChild(btn); group.appendChild(body);
-      sacc.appendChild(group);
-    });
-    spellsWrap.appendChild(sacc);
-  }
 }
 
 function updateCountdown(){

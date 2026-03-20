@@ -162,24 +162,24 @@ def parse_player_stats(stats_json, adv_json, uuid):
         "ores_mined": 0,
         "crafts_done": 0,
         "chunks_explored": 0,
+        "ftb_quests_done": 0,
+        "ftb_quests_total": 0,
         "stats": {},
     }
 
     # Stats
     if stats_json:
         stats = stats_json.get("stats", {})
-        # Exporter les stats brutes pour le site (minerais, crafts, boss détaillés)
         result["stats"] = stats
 
-        # Temps de jeu (en ticks, 20 ticks = 1 seconde)
         custom = stats.get("minecraft:custom", {})
         result["playtime_ticks"] = custom.get("minecraft:play_time", 0) or custom.get("minecraft:play_one_minute", 0)
-        # Morts
         result["deaths"] = custom.get("minecraft:deaths", 0)
-        # Mobs tués
+        # Chunks chargés par le joueur
+        result["chunks_explored"] = custom.get("minecraft:chunks_loaded", 0)
+
         killed = stats.get("minecraft:killed", {})
         result["mobs_killed"] = sum(killed.values())
-        # Boss moddés
         for mob_id, boss_info in BOSS_NAMES.items():
             count = killed.get(mob_id, 0)
             if count > 0:
@@ -188,7 +188,6 @@ def parse_player_stats(stats_json, adv_json, uuid):
                     "icon": boss_info["icon"],
                     "count": count
                 })
-        # Minerais minés
         mined = stats.get("minecraft:mined", {})
         ore_keywords = ["ore", "raw_iron", "raw_copper", "raw_gold", "ancient_debris",
                         "nether_quartz", "coal", "lapis", "redstone", "diamond", "emerald",
@@ -198,73 +197,16 @@ def parse_player_stats(stats_json, adv_json, uuid):
             v for k, v in mined.items()
             if any(kw in k for kw in ore_keywords)
         )
-        # Crafts réalisés
         crafted = stats.get("minecraft:crafted", {})
         result["crafts_done"] = sum(crafted.values())
 
-        # Chunks explorés — stat native Minecraft
-        result["chunks_explored"] = custom.get("minecraft:chunks_loaded", 0)
-
-        # Iron's Spells 'n Spellbooks — sorts débloqués via advancements
-        # Les advancements du mod ont la forme : irons_spellbooks:spells/<spell_id>/obtained
-        # On collecte les sorts depuis adv_json (passé en argument)
-        spells_list = []
-        # On les extrait séparément dans parse_player_stats via adv_json
-        result["spells"] = spells_list  # sera rempli après via advancements
-
-    # Advancements — source pour Iron's Spells ET FTB Quests ET progression générale
+    # Advancements — progression générale Minecraft uniquement
     if adv_json:
-        # Advancements génériques Minecraft
         done = sum(1 for v in adv_json.values() if isinstance(v, dict) and v.get("done") is True)
         total = len([v for v in adv_json.values() if isinstance(v, dict) and "done" in v])
         result["advancements_done"] = done
         result["advancements_total"] = max(total, 1)
-
-        # ── Iron's Spells : sorts débloqués ──
-        # Les advancements de VRAIS SORTS ont EXACTEMENT la forme :
-        #   "irons_spellbooks:spells/<spell_name>"
-        # Ex: "irons_spellbooks:spells/fireball", "irons_spellbooks:spells/ice_lance"
-        # Les achievements génériques du mod (ink_root, make_inscription_table…) ont la forme
-        #   "irons_spellbooks:irons_spellbooks/<achievement>" → on les IGNORE
-        spells_list = []
-        import re as _re
-        for adv_key, adv_val in adv_json.items():
-            if not isinstance(adv_val, dict):
-                continue
-            if not adv_val.get("done", False):
-                continue
-            # Uniquement les advancements de la catégorie "spells/"
-            if not adv_key.startswith("irons_spellbooks:spells/"):
-                continue
-            # Extraire le nom du sort : "irons_spellbooks:spells/fireball" → "irons_spellbooks:fireball"
-            spell_name = adv_key.split("irons_spellbooks:spells/", 1)[1].split("/")[0]
-            spell_id = f"irons_spellbooks:{spell_name}"
-
-            # Chercher le niveau dans les critères (ex: "level_5": {"done": true})
-            level = 1
-            criteria = adv_val.get("criteria", {})
-            for crit_key, crit_val in criteria.items():
-                if not isinstance(crit_val, dict) or not crit_val.get("done", False):
-                    continue
-                m = _re.search(r'level[_\s]?(\d+)', crit_key, _re.IGNORECASE)
-                if m:
-                    lvl = int(m.group(1))
-                    if lvl > level:
-                        level = lvl
-
-            spells_list.append({"id": spell_id, "level": level})
-
-        result["spells"] = spells_list
-        if spells_list:
-            print(f"    → {len(spells_list)} sorts Iron's Spells trouvés pour {uuid}")
-
-        # ── FTB Quests : progression ──
-        # FTB Quests NE stocke PAS sa progression dans les advancements Minecraft.
-        # Elle est dans world/ftbquests/data/<uuid>.snbt (ou .json selon la version).
-        # On remet ftb_quests_done/total à 0 ici ; ils seront remplis dans run_sync()
-        # après lecture des fichiers ftbquests séparés.
-        result["ftb_quests_done"] = 0
-        result["ftb_quests_total"] = 0
+        # FTB Quests est lu séparément dans run_sync() depuis world/ftbquests/
 
     return result
 
@@ -354,18 +296,16 @@ def run_sync(sftp_pass, rcon_pass):
     except Exception as e:
         print(f"  [SFTP] Erreur : {e}")
 
-    # 3. Lire la progression FTB Quests (world/ftbquests/data/<uuid>.snbt)
-    # FTB Quests stocke la progression de chaque joueur dans un fichier SNBT individuel.
-    # Structure typique d'une entrée : { id: "QUEST_ID", completed: [{ player: "UUID", ... }] }
-    # Le nombre total de quêtes vient du dossier config/ftbquests/quests/*.snbt
+    # 3. Lire la progression FTB Quests
+    # FTB Quests stocke la progression dans world/ftbquests/data/<uuid>.snbt
+    # Le total des quêtes vient de config/ftbquests/quests/*.snbt
     try:
         transport2 = paramiko.Transport((SFTP_HOST, SFTP_PORT))
         transport2.connect(username=SFTP_USER, password=sftp_pass)
         sftp2 = paramiko.SFTPClient.from_transport(transport2)
-
         import re
 
-        # ── Compter le total de quêtes depuis la config ──
+        # ── Total de quêtes depuis la config ──
         quest_total = 0
         try:
             config_files = sftp2.listdir(REMOTE_FTB_QUESTS_CONFIG)
@@ -375,33 +315,29 @@ def run_sync(sftp_pass, rcon_pass):
                 try:
                     with sftp2.open(f"{REMOTE_FTB_QUESTS_CONFIG}/{cf}") as f:
                         content = f.read().decode("utf-8", errors="replace")
-                    # Chaque quête a un champ "id:" à la racine du bloc
-                    quest_total += len(re.findall(r'\bquests\s*:\s*\[', content))
-                    # Méthode alternative : compter les blocs quest individuels
+                    # Compter les blocs de quêtes individuels
                     quest_total += len(re.findall(r'\{\s*id\s*:\s*"[0-9A-F]+"', content))
                 except Exception:
                     pass
-            print(f"  → FTB Quests total (config) : {quest_total} quêtes trouvées")
+            print(f"  → FTB Quests total : {quest_total} quêtes")
         except Exception as e:
             print(f"  → FTB Quests config introuvable ({e})")
 
-        # ── Lire la progression par joueur ──
-        ftb_quests_done_map = {}  # uuid_sans_tirets → nb quêtes complétées
+        # ── Progression par joueur ──
+        ftb_done_map = {}
         try:
             quest_data_files = sftp2.listdir(REMOTE_FTB_QUESTS_PATH + "/data")
             for qf in quest_data_files:
                 if not (qf.endswith(".snbt") or qf.endswith(".json")):
                     continue
-                uuid_raw = qf.replace(".snbt", "").replace(".json", "")
-                uuid_clean = uuid_raw.replace("-", "")
+                uuid_clean = qf.replace(".snbt", "").replace(".json", "").replace("-", "")
                 try:
                     with sftp2.open(f"{REMOTE_FTB_QUESTS_PATH}/data/{qf}") as f:
                         content = f.read().decode("utf-8", errors="replace")
-                    # Compter les quêtes complétées : cherche les blocs "completed" non vides
-                    # Format SNBT : completed: [{ player: "UUID", time: 123 }]
+                    # Blocs "completed" non vides = quête complétée
                     completed_blocks = re.findall(r'completed\s*:\s*\[([^\]]+)\]', content)
                     done_count = sum(1 for b in completed_blocks if b.strip())
-                    ftb_quests_done_map[uuid_clean] = done_count
+                    ftb_done_map[uuid_clean] = done_count
                     print(f"  → FTB Quests {uuid_clean[:8]}: {done_count} complétées")
                 except Exception as e:
                     print(f"  → Erreur lecture quêtes {qf}: {e}")
@@ -411,10 +347,9 @@ def run_sync(sftp_pass, rcon_pass):
         sftp2.close()
         transport2.close()
 
-        # Injecter les données FTB Quests dans chaque joueur
         for uuid, pdata in players_data.items():
-            pdata["ftb_quests_done"] = ftb_quests_done_map.get(uuid, 0)
-            pdata["ftb_quests_total"] = quest_total if quest_total > 0 else 0
+            pdata["ftb_quests_done"] = ftb_done_map.get(uuid, 0)
+            pdata["ftb_quests_total"] = quest_total
 
     except Exception as e:
         print(f"  [FTB Quests] Erreur : {e}")
