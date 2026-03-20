@@ -175,8 +175,17 @@ def parse_player_stats(stats_json, adv_json, uuid):
         custom = stats.get("minecraft:custom", {})
         result["playtime_ticks"] = custom.get("minecraft:play_time", 0) or custom.get("minecraft:play_one_minute", 0)
         result["deaths"] = custom.get("minecraft:deaths", 0)
-        # Chunks chargés par le joueur
-        result["chunks_explored"] = custom.get("minecraft:chunks_loaded", 0)
+        # Chunks explorés — minecraft:chunks_loaded n'existe pas sur Forge/ATM10
+        # On calcule depuis la distance totale marchée (toutes surfaces)
+        # 1 chunk = 16 blocs = 1600 cm dans les stats Minecraft
+        walk_cm = (
+            custom.get("minecraft:walk_one_cm", 0) +
+            custom.get("minecraft:walk_on_water_one_cm", 0) +
+            custom.get("minecraft:walk_under_water_one_cm", 0) +
+            custom.get("minecraft:sprint_one_cm", 0) +
+            custom.get("minecraft:crouch_one_cm", 0)
+        )
+        result["chunks_explored"] = walk_cm // 1600
 
         killed = stats.get("minecraft:killed", {})
         result["mobs_killed"] = sum(killed.values())
@@ -297,59 +306,69 @@ def run_sync(sftp_pass, rcon_pass):
         print(f"  [SFTP] Erreur : {e}")
 
     # 3. Lire la progression FTB Quests
-    # FTB Quests stocke la progression dans world/ftbquests/data/<uuid>.snbt
-    # Le total des quêtes vient de config/ftbquests/quests/*.snbt
+    # - Progression joueur : world/ftbquests/<uuid>.snbt → task_progress { ID: 1L, ... }
+    # - Total de tâches   : config/ftbquests/quests/chapters/*.snbt → compter les blocs task
     try:
         transport2 = paramiko.Transport((SFTP_HOST, SFTP_PORT))
         transport2.connect(username=SFTP_USER, password=sftp_pass)
         sftp2 = paramiko.SFTPClient.from_transport(transport2)
         import re
 
-        # ── Total de quêtes depuis la config ──
-        quest_total = 0
+        # ── Total de tâches depuis les chapitres ──
+        quest_task_total = 0
         try:
-            config_files = sftp2.listdir(REMOTE_FTB_QUESTS_CONFIG)
-            for cf in config_files:
+            chapter_files = sftp2.listdir("config/ftbquests/quests/chapters")
+            for cf in chapter_files:
                 if not cf.endswith(".snbt"):
                     continue
                 try:
-                    with sftp2.open(f"{REMOTE_FTB_QUESTS_CONFIG}/{cf}") as f:
+                    with sftp2.open(f"config/ftbquests/quests/chapters/{cf}") as f:
                         content = f.read().decode("utf-8", errors="replace")
-                    # Compter les blocs de quêtes individuels
-                    quest_total += len(re.findall(r'\{\s*id\s*:\s*"[0-9A-F]+"', content))
+                    # Chaque tâche a un bloc "tasks: [{ ... }]" avec des IDs hexadécimaux
+                    # On compte les IDs de tâches : pattern "id: \"XXXXXXXXXXXXXXXX\""
+                    # dans un contexte tasks
+                    tasks = re.findall(r'tasks\s*:\s*\[([^\]]*)\]', content, re.DOTALL)
+                    for task_block in tasks:
+                        quest_task_total += len(re.findall(r'\btype\s*:', task_block))
                 except Exception:
                     pass
-            print(f"  → FTB Quests total : {quest_total} quêtes")
+            print(f"  → FTB Quests total tâches : {quest_task_total}")
         except Exception as e:
-            print(f"  → FTB Quests config introuvable ({e})")
+            print(f"  → FTB Quests chapitres introuvables ({e})")
 
         # ── Progression par joueur ──
+        # Fichiers : world/ftbquests/<uuid-avec-tirets>.snbt
+        # Contenu  : task_progress { HEXID: 1L, ... } — chaque entrée = tâche complétée
         ftb_done_map = {}
         try:
-            quest_data_files = sftp2.listdir(REMOTE_FTB_QUESTS_PATH + "/data")
-            for qf in quest_data_files:
-                if not (qf.endswith(".snbt") or qf.endswith(".json")):
+            quest_files = sftp2.listdir("world/ftbquests")
+            for qf in quest_files:
+                if not qf.endswith(".snbt"):
                     continue
-                uuid_clean = qf.replace(".snbt", "").replace(".json", "").replace("-", "")
+                uuid_clean = qf.replace(".snbt", "").replace("-", "")
                 try:
-                    with sftp2.open(f"{REMOTE_FTB_QUESTS_PATH}/data/{qf}") as f:
+                    with sftp2.open(f"world/ftbquests/{qf}") as f:
                         content = f.read().decode("utf-8", errors="replace")
-                    # Blocs "completed" non vides = quête complétée
-                    completed_blocks = re.findall(r'completed\s*:\s*\[([^\]]+)\]', content)
-                    done_count = sum(1 for b in completed_blocks if b.strip())
-                    ftb_done_map[uuid_clean] = done_count
-                    print(f"  → FTB Quests {uuid_clean[:8]}: {done_count} complétées")
+                    # Extraire le bloc task_progress
+                    tp_match = re.search(r'task_progress\s*:\s*\{([^}]*)\}', content, re.DOTALL)
+                    if tp_match:
+                        # Compter les entrées "HEXID: 1L"
+                        done_count = len(re.findall(r'[0-9A-F]{16}\s*:\s*1L', tp_match.group(1)))
+                        ftb_done_map[uuid_clean] = done_count
+                        print(f"  → FTB Quests {uuid_clean[:8]}: {done_count} tâches complétées")
+                    else:
+                        ftb_done_map[uuid_clean] = 0
                 except Exception as e:
-                    print(f"  → Erreur lecture quêtes {qf}: {e}")
+                    print(f"  → Erreur lecture {qf}: {e}")
         except Exception as e:
-            print(f"  → FTB Quests data introuvable ({e})")
+            print(f"  → world/ftbquests introuvable ({e})")
 
         sftp2.close()
         transport2.close()
 
         for uuid, pdata in players_data.items():
             pdata["ftb_quests_done"] = ftb_done_map.get(uuid, 0)
-            pdata["ftb_quests_total"] = quest_total
+            pdata["ftb_quests_total"] = quest_task_total
 
     except Exception as e:
         print(f"  [FTB Quests] Erreur : {e}")

@@ -516,9 +516,17 @@ function getKilledBossMap(p){
 function bossTotal(p){return Object.keys(getKilledBossMap(p)).length;}
 
 function chunksExplored(p){
+  // Calculé depuis la distance marchée totale (walk_one_cm / 1600)
+  // car minecraft:chunks_loaded n'existe pas sur Forge/ATM10
   if(p.chunks_explored!=null) return p.chunks_explored;
+  // Fallback live depuis les stats brutes si chunks_explored absent
   const custom=p.stats?.["minecraft:custom"]||{};
-  return custom["minecraft:chunks_loaded"]||0;
+  const walkCm=(custom["minecraft:walk_one_cm"]||0)
+              +(custom["minecraft:walk_on_water_one_cm"]||0)
+              +(custom["minecraft:walk_under_water_one_cm"]||0)
+              +(custom["minecraft:sprint_one_cm"]||0)
+              +(custom["minecraft:crouch_one_cm"]||0);
+  return Math.floor(walkCm/1600);
 }
 
 /* ══ IRON'S SPELLS REGISTRY ══ */
@@ -607,24 +615,21 @@ const MOCK={
   server:{online:true,host:"srv01.uniheberg.fr:25505"},
   players:[
     {name:"Theronak",uuid:"8667ba71",playtime_ticks:22521600,playtime_human:"312h 44min",
-     mobs_killed:18472,deaths:47,kd:"392.8",ftb_quests_done:312,ftb_quests_total:450,
-     bosses:[{name:"Avaricia",icon:"💰",count:12},{name:"Ignis",icon:"🔥",count:3},{name:"Naga",icon:"🐍",count:1}],
-     spells:[{id:"irons_spellbooks:fireball",level:7},{id:"irons_spellbooks:magic_missile",level:5},{id:"irons_spellbooks:blaze_storm",level:4},{id:"irons_spellbooks:chain_lightning",level:3},{id:"irons_spellbooks:heal",level:6},{id:"irons_spellbooks:blink",level:2}]},
+     mobs_killed:18472,deaths:47,kd:"392.8",ftb_quests_done:312,ftb_quests_total:850,chunks_explored:4168,
+     bosses:[{name:"Avaricia",icon:"💰",count:12},{name:"Ignis",icon:"🔥",count:3},{name:"Naga",icon:"🐍",count:1}]},
     {name:"Lyraveth",uuid:"c3f8a912",playtime_ticks:17366400,playtime_human:"241h 12min",
-     mobs_killed:9284,deaths:89,kd:"104.3",ftb_quests_done:198,ftb_quests_total:450,
-     bosses:[{name:"Avaricia",icon:"💰",count:6}],
-     spells:[{id:"irons_spellbooks:ice_lance",level:8},{id:"irons_spellbooks:blizzard",level:5},{id:"irons_spellbooks:healing_circle",level:3}]},
+     mobs_killed:9284,deaths:89,kd:"104.3",ftb_quests_done:198,ftb_quests_total:850,chunks_explored:1940,
+     bosses:[{name:"Avaricia",icon:"💰",count:6}]},
     {name:"Durrak",uuid:"5e2b1d04",playtime_ticks:14256000,playtime_human:"198h 05min",
-     mobs_killed:22105,deaths:31,kd:"713.1",ftb_quests_done:421,ftb_quests_total:450,
-     bosses:[{name:"Avaricia",icon:"💰",count:19},{name:"Ignis",icon:"🔥",count:5}],
-     spells:[{id:"irons_spellbooks:blood_slash",level:5},{id:"irons_spellbooks:raise_dead",level:4},{id:"irons_spellbooks:wither_skull",level:9},{id:"irons_spellbooks:eldritch_blast",level:3}]},
+     mobs_killed:22105,deaths:31,kd:"713.1",ftb_quests_done:421,ftb_quests_total:850,chunks_explored:3890,
+     bosses:[{name:"Avaricia",icon:"💰",count:19},{name:"Ignis",icon:"🔥",count:5}]},
     {name:"Seraphel",uuid:"9a4c77b3",playtime_ticks:6303600,playtime_human:"87h 33min",
-     mobs_killed:3442,deaths:122,kd:"28.2",ftb_quests_done:64,ftb_quests_total:450,bosses:[],spells:[]},
+     mobs_killed:3442,deaths:122,kd:"28.2",ftb_quests_done:64,ftb_quests_total:850,chunks_explored:992,bosses:[]},
     {name:"Vortan",uuid:"2f6e3a88",playtime_ticks:11253600,playtime_human:"156h 21min",
-     mobs_killed:11930,deaths:58,kd:"205.7",ftb_quests_done:155,ftb_quests_total:450,
-     bosses:[{name:"Ignis",icon:"🔥",count:6}],spells:[{id:"irons_spellbooks:lightning_lance",level:6},{id:"irons_spellbooks:thunder_step",level:4}]},
+     mobs_killed:11930,deaths:58,kd:"205.7",ftb_quests_done:155,ftb_quests_total:850,chunks_explored:1840,
+     bosses:[{name:"Ignis",icon:"🔥",count:6}]},
     {name:"Mira",uuid:"7d1b5f22",playtime_ticks:1594800,playtime_human:"22h 08min",
-     mobs_killed:872,deaths:48,kd:"18.2",ftb_quests_done:12,ftb_quests_total:450,bosses:[],spells:[]},
+     mobs_killed:872,deaths:48,kd:"18.2",ftb_quests_done:12,ftb_quests_total:850,chunks_explored:258,bosses:[]},
   ]
 };
 
